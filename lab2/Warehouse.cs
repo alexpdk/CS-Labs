@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace lab1 {
+namespace lab2 {
 	/// <summary>
 	/// Интерфейс для складов
 	/// </summary>
@@ -13,20 +12,22 @@ namespace lab1 {
 		int Space {
 			get; set;
 		}
-		/// <summary>
-		/// Отпустить требуемое число медикаментов со склада. 
-		/// </summary>
-		/// <param name="_inn">МНН медикамента</param>
-		/// <param name="requiredNumber">Требуемое число</param>
-		/// <returns>Были ли медикаменты успешно выданы</returns>
-		bool distributeDrug(string _inn, int requiredNumber);
+		/// <returns>Общую стоимость партий на балансе склада</returns>
+		double getBalance();
 		/// <summary>
 		/// Загрузить партию медикаментов на склад. Если на складе отстуствуют необходимые 
 		/// для партии условия хранения или недостаточно место, партия на складе не размещается.
 		/// </summary>
 		/// <param name="shipment">Партия медикаментов</param>
 		/// <returns>Удалось ли успешно разместить партию</returns>
-		bool storeShipment(IShipment shipment);
+		bool storeShipment(IShipment<IDrug> shipment);
+		/// <summary>
+		/// Отпустить требуемое число медикаментов со склада. 
+		/// </summary>
+		/// <param name="drug">Требуемый медикамент</param>
+		/// <param name="requiredNumber">Требуемое число</param>
+		/// <returns>Были ли медикаменты успешно выданы</returns>
+		bool distributeDrug(IDrug drug, int requiredNumber);
 	}
 	/// <summary>
 	/// Интерфейс для складов с внутренними хранилищами для медикаментов.
@@ -47,7 +48,7 @@ namespace lab1 {
 		/// <summary>
 		/// Партии медикаментов на складе
 		/// </summary>
-		private List<IShipment> shipments;
+		private List<IShipment<IDrug>> shipments;
 		/// <summary>
 		/// Свободное место на складе (измеряется в количестве контейнеров с медикаментами)
 		/// </summary>
@@ -70,7 +71,7 @@ namespace lab1 {
 		/// <param name="_space">Начальная вместимость</param>
 		protected Warehouse(int _space) {
 			space = _space;
-			shipments = new List<IShipment>();
+			shipments = new List<IShipment<IDrug>>();
 		}
 		/// <summary>
 		/// Позволяет дочерним классам получить экземпляр родительского класса
@@ -81,12 +82,13 @@ namespace lab1 {
 		protected static Warehouse Instance(int space) {
 			return new Warehouse(space);
 		}
-		public virtual bool distributeDrug(string _inn, int requiredNumber) {
-			var proper = (List<IShipment>)shipments.Where(shipment=>shipment.getDrug().INN == _inn);
+		public virtual bool distributeDrug(IDrug drug, int requiredNumber) {
+			var proper = (List<IShipment<IDrug>>)shipments.Where(
+				shipment=>shipment.getDrug().Equals(drug));
 			while(requiredNumber > 0) {
 				if(proper.Count == 0) return false;
 
-				IShipment used = proper.First();
+				var used = proper.First();
 				int dec = used.decreaseVolume(requiredNumber);
 				requiredNumber -= dec;
 				space += dec;
@@ -95,7 +97,14 @@ namespace lab1 {
 			}
 			return true;
 		}
-		public virtual bool storeShipment(IShipment shipment) {
+		public virtual double getBalance() {
+			double balance = 0;
+			foreach(var shipment in shipments) {
+				balance += shipment.Cost;
+			}
+			return balance;
+		}
+		public virtual bool storeShipment(IShipment<IDrug> shipment) {
 			if(space >= shipment.getVolume()) {
 				space -= shipment.getVolume();
 				shipments.Add(shipment);
@@ -103,13 +112,14 @@ namespace lab1 {
 			}
 			else return false;
 		}
+	
 	}
 	/// <summary>
 	/// Обычный склад не позволяет хранить медикаменты, требующие охлаждения или защиты 
 	/// </summary>
 	public class CommonWarehouse : Warehouse {
 		public CommonWarehouse(int capacity) : base(capacity) { }
-		public override bool storeShipment(IShipment shipment) {
+		public override bool storeShipment(IShipment<IDrug> shipment) {
 			var drug = shipment.getDrug();
 			if(drug.isNarcotic() || drug.requiresFridge()) {
 				return false;
@@ -147,21 +157,23 @@ namespace lab1 {
 		protected SpecialWarehouse(int space, int specialSpace) : base(space){
 			specialStore = Warehouse.Instance(specialSpace);
 		}
+		public override double getBalance() {
+			return base.getBalance() + specialStore.getBalance();
+		}
 	}
 	/// <summary>
 	/// Склад с холодильниками позволяет хранить препараты в охлаждённом состоянии
 	/// </summary>
 	public class FridgeWarehouse : SpecialWarehouse {
 		public FridgeWarehouse(int space, int fridgeSpace) : base(space, fridgeSpace){}
-		public override bool distributeDrug(string _inn, int requiredNumber) {
-			var drug = new UnifiedDescriptor(_inn);
+		public override bool distributeDrug(IDrug drug, int requiredNumber) {
 			if(drug.requiresFridge()) {
-				return specialStore.distributeDrug(_inn, requiredNumber);
+				return specialStore.distributeDrug(drug, requiredNumber);
 			}else {
-				return base.distributeDrug(_inn, requiredNumber);
+				return base.distributeDrug(drug, requiredNumber);
 			}
 		}
-		public override bool storeShipment(IShipment shipment) {
+		public override bool storeShipment(IShipment<IDrug> shipment) {
 			var drug = shipment.getDrug();
 			if(drug.isNarcotic()) {
 				return false;
@@ -177,15 +189,14 @@ namespace lab1 {
 	/// </summary>
 	public class SafeWarehouse : SpecialWarehouse {
 		public SafeWarehouse(int space, int safeSpace) : base(space, safeSpace){}
-		public override bool distributeDrug(string _inn, int requiredNumber) {
-			var drug = new UnifiedDescriptor(_inn);
+		public override bool distributeDrug(IDrug drug, int requiredNumber) {
 			if(drug.isNarcotic()) {
-				return specialStore.distributeDrug(_inn, requiredNumber);
+				return specialStore.distributeDrug(drug, requiredNumber);
 			}else {
-				return base.distributeDrug(_inn, requiredNumber);
+				return base.distributeDrug(drug, requiredNumber);
 			}
 		}
-		public override bool storeShipment(IShipment shipment) {
+		public override bool storeShipment(IShipment<IDrug> shipment) {
 			var drug = shipment.getDrug();
 			if(drug.isNarcotic()) {
 				return specialStore.storeShipment(shipment);
@@ -201,15 +212,14 @@ namespace lab1 {
 	/// </summary>
 	public class ComboWarehouse : SpecialWarehouse {
 		public ComboWarehouse(int space, int comboSpace) : base(space, comboSpace){}
-		public override bool distributeDrug(string _inn, int requiredNumber) {
-			var drug = new UnifiedDescriptor(_inn);
+		public override bool distributeDrug(IDrug drug, int requiredNumber) {
 			if(drug.isNarcotic() || drug.requiresFridge()) {
-				return specialStore.distributeDrug(_inn, requiredNumber);
+				return specialStore.distributeDrug(drug, requiredNumber);
 			}else {
-				return base.distributeDrug(_inn, requiredNumber);
+				return base.distributeDrug(drug, requiredNumber);
 			}
 		}
-		public override bool storeShipment(IShipment shipment) {
+		public override bool storeShipment(IShipment<IDrug> shipment) {
 			var drug = shipment.getDrug();
 			if(drug.isNarcotic() || drug.requiresFridge()) {
 				return specialStore.storeShipment(shipment);

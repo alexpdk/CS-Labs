@@ -2,29 +2,121 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace lab1 {
+namespace lab2 { 
 	/// <summary>
 	/// Интерфейс для медикаментов
 	/// </summary>
-	public interface IDrug {
-		/// <summary>
-		/// Свойство, позволяющее получить МНН медикамента
-		/// </summary>
-		string INN {
-			get;
-		}
+	public interface IDrug : ICloneable, IEquatable<IDrug>{
 		/// <returns>Является ли медикамент наркотическим</returns>
 		bool isNarcotic();
 		/// <returns>Требует ли медикамент хранения в охлаждённом состоянии</returns>
 		bool requiresFridge();
 	}
 	/// <summary>
+	/// Интерфейс для медикаментов фабричного производства, учитываемых по МНН
+	/// </summary>
+	public interface IManufacturedDrug : IDrug{
+		/// <summary>
+		/// Доступный для чтения МНН медикамента
+		/// </summary>
+		string INN {
+			get;
+		}
+	}
+	/// <summary>
+	/// Интерфейс для экстемпоральных медикаментов, учитываемых по коду ингредиентов.
+	/// </summary>
+	public interface ICompoundedDrug : IDrug {
+		/// <summary>
+		/// Доступный для чтения код ингредиентов
+		/// </summary>
+		string CompoundCode {
+			get;
+		}
+		/// <returns>Сертифицировано ли производство препарата</returns>
+		bool isSertified();
+	}
+	/// <summary>
+	/// Экстемпоральный медикамент
+	/// </summary>
+	public class CompoundedDrug : ICompoundedDrug {
+		/// <summary>
+		/// Входят ли в состав наркотики
+		/// </summary>
+		bool has_narcotic;
+		/// <summary>
+		/// Требует ли хранения в охлаждённом состоянии
+		/// </summary>
+		bool keep_cold;
+		/// <summary>
+		/// Сертифицирован ли препарат
+		/// </summary>
+		bool sertified;
+		/// <summary>
+		/// Код ингредиентов
+		/// </summary>
+		string code;
+
+		public string CompoundCode {
+			get {
+				return code;
+			}
+		}
+		public CompoundedDrug(ICollection<IManufacturedDrug> ingredients, bool sertified = false) {
+			this.sertified = sertified;
+			code = "";
+			foreach(var drug in ingredients) {
+				code += drug.INN+'.';
+				if(drug.isNarcotic()) has_narcotic = true;
+				if(drug.requiresFridge()) keep_cold = true;
+			}
+		}
+		public object Clone() {
+			return MemberwiseClone();
+		}
+		public bool Equals(IDrug other) {
+			var cd = other as ICompoundedDrug;
+			return (cd != null) && (code == cd.CompoundCode);
+		}
+		public override bool Equals(object obj) {
+			IDrug drug = obj as IDrug;
+			return (drug != null) && Equals(drug);
+		}
+		public override int GetHashCode() {
+			return code.GetHashCode();
+		}
+		public bool isNarcotic() {
+			return has_narcotic;
+		}
+		public bool isSertified() {
+			return sertified;
+		}
+		public bool requiresFridge() {
+			return keep_cold;
+		}
+	}
+
+	/// <summary>
 	/// Описание препарата, позволяющее получать его свойства при известном МНН. Не определяет
 	/// способ идентификации препарата.
 	/// </summary>
-	public abstract class DrugDescriptor : IDrug {
+	public abstract class DrugDescriptor : IManufacturedDrug {
 		public abstract string INN {
 			get;
+		}
+		public object Clone() {
+			return MemberwiseClone();
+		}
+		public bool Equals(IDrug other) {
+			var md = other as IManufacturedDrug;
+			return (md != null) && (INN == md.INN); 
+		}
+		public override bool Equals(object obj) {
+			var drug = obj as IDrug;
+			return (drug != null) && Equals(drug); 
+		}
+		public override int GetHashCode() {
+			return INN.GetHashCode();
 		}
 		public bool isNarcotic() {
 			return PharmData.conditions[INN] % PharmData.NARCOTIC == 1;
@@ -45,6 +137,9 @@ namespace lab1 {
 		}
 		public UnifiedDescriptor(string _inn){
 			inn = _inn;
+		}
+		public override string ToString() {
+			return inn;
 		}
 	}
 	/// <summary>
@@ -74,10 +169,12 @@ namespace lab1 {
 	public class TrademarkDescriptor : NonUnifiedDescriptor {
 		private string trademark;
 		private string company; 
-		//
 		public TrademarkDescriptor(string _trademark, string _company, string inn) : base(inn) {
 			trademark = _trademark;
 			company = _company;
+		}
+		public override string ToString() {
+			return string.Format("{0}: {1}({2})",company,trademark,INN);
 		}
 	}
 	/// <summary>
@@ -88,6 +185,9 @@ namespace lab1 {
 
 		public ChemicalDescriptor(string name, string inn) : base(inn) {
 			chemName = name;
+		}
+		public override string ToString() {
+			return string.Format("{0}({1})",chemName,INN);
 		}
 	}
 	/// <summary>
@@ -109,6 +209,7 @@ namespace lab1 {
 			{"atenolol", USUAL_CONDITIONS},
 			{"procaine", NARCOTIC},
 			{"cocaine", NARCOTIC},
+			{"Certolizumab pegol", USUAL_CONDITIONS}
 		};
 		/// <summary>
 		/// Список МНН закупаемых медикаментов
