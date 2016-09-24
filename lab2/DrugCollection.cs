@@ -37,6 +37,7 @@ namespace lab2 {
 		public DrugCollection(List<T> _list){
 			list = _list;
 		}
+		public DrugCollection() : this(new List<T>()) { }
 		public void Add(T drug) {
 			// TODO Check, whether can be simplified with list.Contains
 			if(!list.Exists(d=>d.Equals(drug))) {
@@ -52,6 +53,9 @@ namespace lab2 {
 		public void CopyTo(T[] array, int index) {
 			list.CopyTo(array, index);
 		}
+		public void ForEach(Action<T> action) {
+			list.ForEach(action);
+		}
 		public IEnumerator<T> GetEnumerator() {
 			return new DrugEnumerator<T>(this);
 		}
@@ -62,6 +66,21 @@ namespace lab2 {
 			int index = list.FindIndex(d=>d.Equals(drug));
 			if(index >= 0) list.RemoveAt(index);
 			return index >= 0;
+		}
+		public void Sort(Comparison<T> comp) {
+			list.Sort(comp);
+		}
+		/// <summary>
+		/// Получить строковое представление коллекции сложением строковых представлений медикаментов
+		/// </summary>
+		/// <param name="t_str">Функция, возвращающая строковое представление медикамента</param>
+		/// <param name="delimeter">Разделитель представлений медикаментов</param>
+		public string Stringify(Func<T, string> t_str, string delimeter=", ") {
+			var stringList = list.ConvertAll<string>(t_str.Invoke);
+			return string.Join(delimeter, stringList);
+		}
+		public override string ToString() {
+			return Stringify(drug=>drug.ToString());
 		}
 		public T this[int index] {
 			get {

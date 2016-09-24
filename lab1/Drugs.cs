@@ -27,10 +27,10 @@ namespace lab1 {
 			get;
 		}
 		public bool isNarcotic() {
-			return PharmData.conditions[INN] % PharmData.NARCOTIC == 1;
+			return (PharmData.conditions[INN] & PharmData.NARCOTIC) == 1;
 		}
 		public bool requiresFridge() {
-			return PharmData.conditions[INN] % PharmData.KEEP_COLD == 1;
+			return (PharmData.conditions[INN] & PharmData.KEEP_COLD) == 1;
 		}
 	}
 	/// <summary>

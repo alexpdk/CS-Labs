@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Globalization;
 
 namespace lab1
 {
@@ -56,7 +56,12 @@ namespace lab1
 			funds.ForEach(f=> 
 				Console.WriteLine("{0}", f.approveFunding(atenolol, departments[1]))
 			);
-			
+			var str = Console.ReadLine();
+			double d;
+			var info = new CultureInfo("ru-RU");
+			if(double.TryParse(str, NumberStyles.Any, info, out d)) {
+				Console.WriteLine((d*2).ToString("f", info));
+			}
 
 			Console.ReadKey();
         }

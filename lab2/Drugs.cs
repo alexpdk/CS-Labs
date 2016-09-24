@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace lab2 { 
 	/// <summary>
@@ -64,9 +66,8 @@ namespace lab2 {
 		}
 		public CompoundedDrug(ICollection<IManufacturedDrug> ingredients, bool sertified = false) {
 			this.sertified = sertified;
-			code = "";
+			code = string.Join(".",ingredients.Select(drug=>drug.INN));
 			foreach(var drug in ingredients) {
-				code += drug.INN+'.';
 				if(drug.isNarcotic()) has_narcotic = true;
 				if(drug.requiresFridge()) keep_cold = true;
 			}
@@ -94,6 +95,9 @@ namespace lab2 {
 		public bool requiresFridge() {
 			return keep_cold;
 		}
+		public override string ToString() {
+			return "Compound:"+code.Replace('.','-');
+		}
 	}
 
 	/// <summary>
@@ -119,10 +123,10 @@ namespace lab2 {
 			return INN.GetHashCode();
 		}
 		public bool isNarcotic() {
-			return PharmData.conditions[INN] % PharmData.NARCOTIC == 1;
+			return (PharmData.conditions[INN] & PharmData.NARCOTIC) == 1;
 		}
 		public bool requiresFridge() {
-			return PharmData.conditions[INN] % PharmData.KEEP_COLD == 1;
+			return (PharmData.conditions[INN] & PharmData.KEEP_COLD) == 1;
 		}
 	}
 	/// <summary>
