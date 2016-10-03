@@ -68,26 +68,45 @@ namespace lab2
 
 			// adding drugs of different type
 			dC.Add(compounded);
-			dC.Add(new UnifiedDescriptor("atenolol")); 
+			dC.Add(new UnifiedDescriptor("atenolol"));
 
 			// using Func to print array
 			Func<IDrug, string> drug_str = stringifyMedication;
 			Console.WriteLine("Unsorted array");
 			Console.WriteLine(dC.Stringify(drug_str, " | "));
-				 
+
 			// using delegate to sort by type/name
-			Comparison<IDrug> drug_comp = compareDrugs;
-			dC.Sort(drug_comp);
+			DrugCollection<IDrug>.SortDrugList smoothSort = (list) => {
+				new Smoothsort<IDrug>(compareDrugs, list).Sort();
+			};
+			dC.SpecifySortMethod(smoothSort);
+			dC.Sort();
 			Console.WriteLine("\nSorted array");
 			Console.WriteLine(dC.Stringify(drug_str, " | "));
 
 			// using Action to select narcotics
 			DrugCollection<IDrug> narcotics = new DrugCollection<IDrug>();
-			dC.ForEach(drug=> {
-				if(drug.isNarcotic()) narcotics.Add(drug);
+			dC.ForEach(drug => {
+				if(drug.isNarcotic())
+					narcotics.Add(drug);
 			});
 			Console.WriteLine("\nNarcotics from collection:");
 			Console.WriteLine(narcotics);
+
+			//var list = new List<int> { 2, 6, 12, 9, 0, 2, 8, 15, 77, 7 };
+			//Comparison<int> comp = (a, b) => {
+			//	if(a>b)
+			//		return 1;
+			//	if(a<b)
+			//		return -1;
+			//	return 0;
+			//};
+			//var sort = new Smoothsort<int>(comp, list);
+			//sort.Sort();
+			//foreach(var val in list) {
+			//	Console.Write(" {0}", val);
+			//}
+
 			Console.ReadKey();
         }
     }

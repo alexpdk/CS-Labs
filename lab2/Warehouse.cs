@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace lab2 {
@@ -12,6 +13,13 @@ namespace lab2 {
 		int Space {
 			get; set;
 		}
+		/// <summary>
+		/// Отпустить требуемое число медикаментов со склада. 
+		/// </summary>
+		/// <param name="drug">Требуемый медикамент</param>
+		/// <param name="requiredNumber">Требуемое число</param>
+		/// <returns>Были ли медикаменты успешно выданы</returns>
+		bool distributeDrug(IDrug drug, int requiredNumber);
 		/// <returns>Общую стоимость партий на балансе склада</returns>
 		double getBalance();
 		/// <summary>
@@ -22,12 +30,20 @@ namespace lab2 {
 		/// <returns>Удалось ли успешно разместить партию</returns>
 		bool storeShipment(IShipment<IDrug> shipment);
 		/// <summary>
-		/// Отпустить требуемое число медикаментов со склада. 
+		/// Событие подсчёта баланса склада. Обработчику передаётся подсчитанный баланс. 
 		/// </summary>
-		/// <param name="drug">Требуемый медикамент</param>
-		/// <param name="requiredNumber">Требуемое число</param>
-		/// <returns>Были ли медикаменты успешно выданы</returns>
-		bool distributeDrug(IDrug drug, int requiredNumber);
+		event Action<WarehouseEventArgs> OnBalanceCount;
+		/// <summary>
+		/// Событие отпуска медикаментов со склада. Обработчику передаётся отпускаемый медикамент, 
+		/// число отпущенных упаковок и логическое значение: удалось ли отпустить требуемое
+		/// количество.
+		/// </summary>
+		event Action<WarehouseEventArgs> OnDrugDistribution;
+		/// <summary>
+		/// Событие размещения партии на складе. Обработчику передаются размещаемая партия
+		/// и логическое значение: удалось ли успешно разместить партию
+		/// </summary>
+		event Action<WarehouseEventArgs> OnShipmentStore;
 	}
 	/// <summary>
 	/// Интерфейс для складов с внутренними хранилищами для медикаментов.
@@ -50,6 +66,11 @@ namespace lab2 {
 		/// </summary>
 		private List<IShipment<IDrug>> shipments;
 		/// <summary>
+		/// Позволяет избежать отправления избыточных событий при подсчёте баланса
+		/// на складах с внутренним хранилищем.
+		/// </summary>
+		protected bool emitBalanceEvent = true;
+		/// <summary>
 		/// Свободное место на складе (измеряется в количестве контейнеров с медикаментами)
 		/// </summary>
 		protected int space;
@@ -64,6 +85,20 @@ namespace lab2 {
 				space = value;
 			}
 		}
+		public event Action<WarehouseEventArgs> OnBalanceCount;
+		public event Action<WarehouseEventArgs> OnDrugDistribution;
+		public event Action<WarehouseEventArgs> OnShipmentStore;
+		// Methods for raising events in derived classes
+		protected void raiseOnBalanceCount(double balance) {
+			if(emitBalanceEvent) OnBalanceCount(new BalanceCheckArgs(this, balance));
+		}
+		protected void raiseOnDrugDistribution(IDrug drug, int distributed, bool success) {
+			OnDrugDistribution(new DrugDistributionArgs(this, drug, distributed, success));
+		}
+		protected void raiseOnShipmentStore(IShipment<IDrug> shipment, bool success) {
+			OnShipmentStore(new ShipmentStoreArgs(this, shipment, success));
+		}
+
 		/// <summary>
 		/// Область видимости конструктора ограничена, т.к. класс не пригоден для самостоятельного 
 		/// использования (отсутствуют проверки на условия хранения медикаментов).
@@ -72,6 +107,10 @@ namespace lab2 {
 		protected Warehouse(int _space) {
 			space = _space;
 			shipments = new List<IShipment<IDrug>>();
+			// subscribe noop to events to prevent NullPointerException when event emitted
+			OnBalanceCount = delegate { };
+			OnDrugDistribution = delegate { };
+			OnShipmentStore = delegate { };
 		}
 		/// <summary>
 		/// Позволяет дочерним классам получить экземпляр родительского класса
@@ -85,9 +124,12 @@ namespace lab2 {
 		public virtual bool distributeDrug(IDrug drug, int requiredNumber) {
 			var proper = (List<IShipment<IDrug>>)shipments.Where(
 				shipment=>shipment.getDrug().Equals(drug));
+			int requiredCopy = requiredNumber;
 			while(requiredNumber > 0) {
-				if(proper.Count == 0) return false;
-
+				if(proper.Count == 0) {
+					raiseOnDrugDistribution(drug, requiredCopy-requiredNumber, false);
+					return false;
+				}
 				var used = proper.First();
 				int dec = used.decreaseVolume(requiredNumber);
 				requiredNumber -= dec;
@@ -95,6 +137,7 @@ namespace lab2 {
 				proper.Remove(used);
 				if(used.getVolume() == 0) shipments.Remove(used);
 			}
+			raiseOnDrugDistribution(drug, requiredCopy, true);
 			return true;
 		}
 		public virtual double getBalance() {
@@ -102,17 +145,19 @@ namespace lab2 {
 			foreach(var shipment in shipments) {
 				balance += shipment.Cost;
 			}
+			raiseOnBalanceCount(balance);
 			return balance;
 		}
 		public virtual bool storeShipment(IShipment<IDrug> shipment) {
 			if(space >= shipment.getVolume()) {
 				space -= shipment.getVolume();
 				shipments.Add(shipment);
+				raiseOnShipmentStore(shipment, true);
 				return true;
 			}
-			else return false;
+			raiseOnShipmentStore(shipment, false);
+			return false;
 		}
-	
 	}
 	/// <summary>
 	/// Обычный склад не позволяет хранить медикаменты, требующие охлаждения или защиты 
@@ -158,7 +203,12 @@ namespace lab2 {
 			specialStore = Warehouse.Instance(specialSpace);
 		}
 		public override double getBalance() {
-			return base.getBalance() + specialStore.getBalance();
+			// Don't emit OnBalanceCount event in getBalance()
+			emitBalanceEvent = false;
+			var balance = base.getBalance() + specialStore.getBalance();
+			emitBalanceEvent = true;
+			raiseOnBalanceCount(balance);
+			return balance;
 		}
 	}
 	/// <summary>
@@ -226,6 +276,37 @@ namespace lab2 {
 			}else {
 				return base.storeShipment(shipment);
 			}
+		}
+	}
+
+	public abstract class WarehouseEventArgs: EventArgs {
+		public readonly Warehouse warehouse;
+		public WarehouseEventArgs(Warehouse ware) {
+			warehouse = ware;
+		}
+	}
+	public class BalanceCheckArgs: WarehouseEventArgs {
+		public readonly double balance;
+		public BalanceCheckArgs(Warehouse warehouse, double balance):base(warehouse) {
+			this.balance = balance;
+		}
+	}
+	public class DrugDistributionArgs: WarehouseEventArgs {
+		public readonly IDrug drug;
+		public readonly int distributed;
+		public readonly bool success;
+		public DrugDistributionArgs(Warehouse warehouse, IDrug drug, int distributed, bool success): base(warehouse) {
+			this.drug = drug;
+			this.distributed = distributed;
+			this.success = success;
+		}
+	}
+	public class ShipmentStoreArgs: WarehouseEventArgs {
+		public readonly IShipment<IDrug> shipment;
+		public readonly bool success;
+		public ShipmentStoreArgs(Warehouse warehouse, IShipment<IDrug> shipment, bool success): base(warehouse) {
+			this.shipment = shipment;
+			this.success = success;
 		}
 	}
 }

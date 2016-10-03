@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -12,6 +13,13 @@ namespace lab2 {
 	public class DrugCollection<T> : ICollection<T> where T : IDrug{
 		private List<T> list;
 		private bool read_only;
+
+		/// <summary>
+		/// Предоставляемый тип для процедур сортировки списка медикаментоа
+		/// </summary>
+		public delegate void SortDrugList(List<T> list);
+		private SortDrugList sortMethod;
+
 		public int Count {
 			get {
 				return list.Count;
@@ -67,8 +75,12 @@ namespace lab2 {
 			if(index >= 0) list.RemoveAt(index);
 			return index >= 0;
 		}
-		public void Sort(Comparison<T> comp) {
-			list.Sort(comp);
+		public void Sort() {
+			Debug.Assert(sortMethod != null);
+			sortMethod.Invoke(list);
+		}
+		public void SpecifySortMethod(SortDrugList method){
+			sortMethod = method;
 		}
 		/// <summary>
 		/// Получить строковое представление коллекции сложением строковых представлений медикаментов
