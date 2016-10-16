@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -27,7 +28,6 @@ namespace lab2 {
 		}
 		public virtual void StopLogginng() {
 			writer.Close();
-			
 		}
 	}
 	public class ConsoleWarehouseLogger<T> : WarehouseLogger<T> where T : IWarehouse {
@@ -36,8 +36,17 @@ namespace lab2 {
 		}
 	}
 	public class FileWarehouseLogger<T> : WarehouseLogger<T> where T : IWarehouse {
-		public FileWarehouseLogger(T warehouse) : base(warehouse) {
-			
+		public FileWarehouseLogger(T warehouse, string path) : base(warehouse) {
+
+			//Debug.Write(Directory.GetCurrentDirectory());
+			if(!File.Exists(path)) {
+				Debug.Write("Create file");
+				var stream = File.Create(path);
+				writer = new StreamWriter(stream);
+			}else {
+				writer=File.AppendText(path);
+				Debug.Write("File exists");
+			}
 		}
 	}
 }

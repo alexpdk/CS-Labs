@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace lab2
 {
@@ -16,6 +17,32 @@ namespace lab2
 			}else{
 				return 1; //greater
 			}
+		}
+		static void printWarehouseEvent(TextWriter writer, WarehouseEventArgs args) {
+			writer.WriteLine("Event received");
+			var balArgs = args as BalanceCheckArgs;
+			if(balArgs != null) {
+				writer.WriteLine("Balance checked: balance={0}",balArgs.balance);
+				return;
+			}
+			var storeArgs = args as ShipmentStoreArgs;
+			if(storeArgs != null) {
+				var shipment = storeArgs.shipment;
+				var result = (storeArgs.success) ? " stored successfully." : "couldn't be stored.";
+
+				writer.WriteLine("Shipment of {0} volume={1} cost={2} {3}",
+					shipment.getDrug(), shipment.getVolume(), shipment.Cost, result);
+				return;
+			}
+			var distArgs = args as DrugDistributionArgs;
+			//if(distArgs != null) {
+			//	var shipment = di
+			//	var result = (storeArgs.success) ? " stored successfully." : "couldn't be stored.";
+
+			//	writer.WriteLine("Shipment of {0} volume={1} cost={2} {3}",
+			//		shipment.getDrug(), shipment.getVolume(), shipment.Cost, result);
+			//	return;
+			//}
 		}
 		static string stringifyMedication(IDrug drug) {
 			return drug.ToString();
@@ -75,9 +102,9 @@ namespace lab2
 			Console.WriteLine("Unsorted array");
 			Console.WriteLine(dC.Stringify(drug_str, " | "));
 
-			// using delegate to sort by type/name
-			DrugCollection<IDrug>.SortDrugList smoothSort = (list) => {
-				new Smoothsort<IDrug>(compareDrugs, list).Sort();
+			//// using delegate to sort by type/name
+			DrugCollection<IDrug>.SortDrugList smoothSort = (_list) => {
+				new Smoothsort<IDrug>(compareDrugs, _list).Sort();
 			};
 			dC.SpecifySortMethod(smoothSort);
 			dC.Sort();
@@ -93,19 +120,31 @@ namespace lab2
 			Console.WriteLine("\nNarcotics from collection:");
 			Console.WriteLine(narcotics);
 
-			//var list = new List<int> { 2, 6, 12, 9, 0, 2, 8, 15, 77, 7 };
-			//Comparison<int> comp = (a, b) => {
-			//	if(a>b)
-			//		return 1;
-			//	if(a<b)
-			//		return -1;
-			//	return 0;
-			//};
-			//var sort = new Smoothsort<int>(comp, list);
-			//sort.Sort();
-			//foreach(var val in list) {
-			//	Console.Write(" {0}", val);
-			//}
+			var list = new List<int> { 2, 6, 12, 9, 0, 2, 8, 15, 77, 7 };
+			Comparison<int> comp = (a, b) => {
+				if(a>b)
+					return 1;
+				if(a<b)
+					return -1;
+				return 0;
+			};
+			var sort = new Smoothsort<int>(comp, list, true);
+			sort.Sort();
+			foreach(var val in list) {
+				Console.Write(" {0}", val);
+			}
+
+			Console.WriteLine();
+
+			FridgeWarehouse fw =new FridgeWarehouse(200, 40);
+			WarehouseLogger<IWarehouse> l = new FileWarehouseLogger<IWarehouse>(fw, "log.txt");
+			//WarehouseLogger<IWarehouse> l = new ConsoleWarehouseLogger<IWarehouse>(fw);
+			l.OnLog += printWarehouseEvent;
+
+			var balance = fw.getBalance();
+
+			fw.storeShipment(new Shipment<IDrug>(new UnifiedDescriptor("atenolol"), 40, 10));
+			l.StopLogginng();
 
 			Console.ReadKey();
         }

@@ -278,13 +278,16 @@ namespace lab2 {
 			}
 		}
 	}
-
+	/// <summary>
+	/// Класс для передачи аргументов в обработчики событий класса Склад
+	/// </summary>
 	public abstract class WarehouseEventArgs: EventArgs {
 		public readonly Warehouse warehouse;
 		public WarehouseEventArgs(Warehouse ware) {
 			warehouse = ware;
 		}
 	}
+	// Производные классы описывают аргументы для различных типов событий.
 	public class BalanceCheckArgs: WarehouseEventArgs {
 		public readonly double balance;
 		public BalanceCheckArgs(Warehouse warehouse, double balance):base(warehouse) {
