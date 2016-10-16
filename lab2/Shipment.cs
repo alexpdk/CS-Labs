@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace lab2 {
 	/// <summary>
@@ -21,6 +23,9 @@ namespace lab2 {
 		/// <summary></summary>
 		/// <returns>Размер партии (число контейнеров)</returns>
 		int getVolume();
+		/// <summary></summary>
+		/// <returns>Закупочная цена контейнера</returns>
+		double getPrice();
 		/// <summary>
 		/// Стоимость партии
 		/// </summary>
@@ -59,7 +64,11 @@ namespace lab2 {
 		public Shipment(T _drug, int _volume, double _price){
 			drug = _drug;
 			volume = _volume;
+			if(volume == 0) throw new DrugAccountException("Zero shipment volume");
+			else if(volume < 0) throw new DrugAccountException("Negative shipment volume={0}", volume);
 			price = _price;
+			if(price == 0) throw new DrugAccountException("Zero shipment price");
+			else if(price < 0) throw new DrugAccountException("Negative shipment price={0}", price);
 		}
 		public T getDrug() {
 			return drug;
@@ -71,6 +80,9 @@ namespace lab2 {
 		}
 		public int getVolume() {
 			return volume;
+		}
+		public double getPrice() {
+			return price;
 		}
 	}
 }

@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Shipments>
+  <Shipment>
+    <INN>pazopanib</INN>
+    <Volume>20</Volume>
+    <Price>50.99</Price>
+  </Shipment>
+  <Shipment>
+    <INN>atenolol</INN>
+    <Volume>30</Volume>
+    <Price>70.0</Price>
+  </Shipment>
+  <Shipment>
+    <CompoundCode>procaine2.atenolol</CompoundCode>
+    <Volume>80</Volume>
+    <Price>120.0</Price>
+  </Shipment>
+</Shipments>

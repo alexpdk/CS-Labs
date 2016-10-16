@@ -67,13 +67,21 @@ namespace lab2 {
 		public CompoundedDrug(ICollection<IManufacturedDrug> ingredients, bool sertified = false) {
 			this.sertified = sertified;
 			code = string.Join(".",ingredients.Select(drug=>drug.INN));
+			defineProperties(ingredients);
+		}
+		public CompoundedDrug(string code, bool sertified=false) {
+			var ings = code.Split('.').Select(inn=>new UnifiedDescriptor(inn)).ToList<IManufacturedDrug>();
+			this.code = code;
+			defineProperties(ings);
+		}
+		public object Clone() {
+			return MemberwiseClone();
+		}
+		private void defineProperties(ICollection<IManufacturedDrug> ingredients) {
 			foreach(var drug in ingredients) {
 				if(drug.isNarcotic()) has_narcotic = true;
 				if(drug.requiresFridge()) keep_cold = true;
 			}
-		}
-		public object Clone() {
-			return MemberwiseClone();
 		}
 		public bool Equals(IDrug other) {
 			var cd = other as ICompoundedDrug;
@@ -94,9 +102,10 @@ namespace lab2 {
 		}
 		public bool requiresFridge() {
 			return keep_cold;
-		}
+		} 
 		public override string ToString() {
-			return "Compound:"+code.Replace('.','-');
+			return code;
+			//return "Compound:"+code.Replace('.','-');
 		}
 	}
 
@@ -141,6 +150,7 @@ namespace lab2 {
 		}
 		public UnifiedDescriptor(string _inn){
 			inn = _inn;
+			if( !PharmData.conditions.ContainsKey(inn)) throw new DrugAccountException("Unknown INN: {0}", inn);
 		}
 		public override string ToString() {
 			return inn;
@@ -219,5 +229,10 @@ namespace lab2 {
 		/// Список МНН закупаемых медикаментов
 		/// </summary>
 		public static List<string> INNList = new List<string>(conditions.Keys);
+
+		public static string Code(IDrug drug) {
+			return (drug is IManufacturedDrug) ? (drug as IManufacturedDrug).INN 
+			       : (drug as ICompoundedDrug).CompoundCode;
+		}
 	}
 }

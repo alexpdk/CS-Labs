@@ -48,10 +48,12 @@
   <ItemGroup>
     <Compile Include="Balance.cs" />
     <Compile Include="Department.cs" />
+    <Compile Include="DrugAccountException.cs" />
     <Compile Include="DrugCollection.cs" />
     <Compile Include="Drugs.cs" />
+    <Compile Include="ExceptionLogger.cs" />
     <Compile Include="Funds.cs" />
-    <Compile Include="Logger.cs" />
+    <Compile Include="WarehouseLogger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shipment.cs" />
@@ -59,6 +61,8 @@
     <Compile Include="Warehouse.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="data\shipments.xml" />
+    <Content Include="data\d.txt" />
     <Content Include="description.txt" />
   </ItemGroup>
   <ItemGroup>

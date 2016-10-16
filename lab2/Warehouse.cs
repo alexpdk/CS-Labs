@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace lab2 {
 	/// <summary>
@@ -22,6 +24,12 @@ namespace lab2 {
 		bool distributeDrug(IDrug drug, int requiredNumber);
 		/// <returns>Общую стоимость партий на балансе склада</returns>
 		double getBalance();
+		/// <summary>
+		/// Загрузить данные о партиях медикаментов на складе из файла конфигурации.
+		/// </summary>
+		/// <param name="path">Путь к файлу</param>
+		/// <returns>Удалось ли разместить на складе указанные в файле партии</returns>
+		bool loadShipments(string path);
 		/// <summary>
 		/// Загрузить партию медикаментов на склад. Если на складе отстуствуют необходимые 
 		/// для партии условия хранения или недостаточно место, партия на складе не размещается.
@@ -71,6 +79,11 @@ namespace lab2 {
 		/// </summary>
 		protected bool emitBalanceEvent = true;
 		/// <summary>
+		/// Позволяет избежать отправления избыточных событий при загрузке партий склада
+		/// из файла конфигурации
+		/// </summary>
+		protected bool emitShipmentEvent = true;
+		/// <summary>
 		/// Свободное место на складе (измеряется в количестве контейнеров с медикаментами)
 		/// </summary>
 		protected int space;
@@ -96,7 +109,7 @@ namespace lab2 {
 			OnDrugDistribution(new DrugDistributionArgs(this, drug, distributed, success));
 		}
 		protected void raiseOnShipmentStore(IShipment<IDrug> shipment, bool success) {
-			OnShipmentStore(new ShipmentStoreArgs(this, shipment, success));
+			if(emitShipmentEvent) OnShipmentStore(new ShipmentStoreArgs(this, shipment, success));
 		}
 
 		/// <summary>
@@ -148,6 +161,44 @@ namespace lab2 {
 			raiseOnBalanceCount(balance);
 			return balance;
 		}
+		public virtual bool loadShipments(string path) {
+			XDocument doc = XDocument.Load(path);
+			bool s = true;
+			try {
+				var arr = doc.Root.Elements("Shipment").Select(x=>new {
+					code = (string) (x.Element("INN") ?? x.Element("CompoundCode")),
+					codeType = x.Element("INN")?.Name ?? "CompoundCode",
+					volume = (int) x.Element("Volume"),
+					price =(double)x.Element("Price")
+				}).ToArray();
+
+				//emitShipmentEvent = false;
+				foreach(var sh in arr) {
+					if(sh.code == null) throw new XmlException("Shipment config file contains entity without INN && CompoundCode");
+
+					s = storeShipment(new Shipment<IDrug>(
+						(sh.codeType=="INN") ? new UnifiedDescriptor(sh.code) as IDrug
+						                     : new CompoundedDrug(sh.code) as IDrug, 
+					sh.volume, sh.price)) && s;
+				}
+				emitShipmentEvent = true;
+			}
+			catch(ArgumentNullException e) {
+				throw new XmlException("Bad-formatted shipment config file", e);
+			}
+			return s;
+		}
+		public void saveShipments(string path) {
+			XElement all = new XElement("Shipments");
+			foreach(var sh in shipments) {
+				var drug = sh.getDrug();
+				all.Add(new XElement("Shipment", 
+					new XElement((drug is IManufacturedDrug) ? "INN" : "CompoundCode", PharmData.Code(drug)),
+					new XElement("Volume", sh.getVolume()),
+					new XElement("Price", sh.getPrice())
+				));
+			}
+		}
 		public virtual bool storeShipment(IShipment<IDrug> shipment) {
 			if(space >= shipment.getVolume()) {
 				space -= shipment.getVolume();
@@ -167,6 +218,7 @@ namespace lab2 {
 		public override bool storeShipment(IShipment<IDrug> shipment) {
 			var drug = shipment.getDrug();
 			if(drug.isNarcotic() || drug.requiresFridge()) {
+				raiseOnShipmentStore(shipment, false);
 				return false;
 			}
 			else return base.storeShipment(shipment);
@@ -226,6 +278,7 @@ namespace lab2 {
 		public override bool storeShipment(IShipment<IDrug> shipment) {
 			var drug = shipment.getDrug();
 			if(drug.isNarcotic()) {
+				raiseOnShipmentStore(shipment, false);
 				return false;
 			}else if(drug.requiresFridge()) {
 				return specialStore.storeShipment(shipment);
@@ -251,6 +304,7 @@ namespace lab2 {
 			if(drug.isNarcotic()) {
 				return specialStore.storeShipment(shipment);
 			}else if(drug.requiresFridge()) {
+				raiseOnShipmentStore(shipment, false);
 				return false;
 			}else {
 				return base.storeShipment(shipment);

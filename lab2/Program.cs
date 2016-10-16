@@ -120,32 +120,45 @@ namespace lab2
 			Console.WriteLine("\nNarcotics from collection:");
 			Console.WriteLine(narcotics);
 
-			var list = new List<int> { 2, 6, 12, 9, 0, 2, 8, 15, 77, 7 };
-			Comparison<int> comp = (a, b) => {
-				if(a>b)
-					return 1;
-				if(a<b)
-					return -1;
-				return 0;
-			};
-			var sort = new Smoothsort<int>(comp, list, true);
-			sort.Sort();
-			foreach(var val in list) {
-				Console.Write(" {0}", val);
-			}
+			//var list = new List<int> { 2, 6, 12, 9, 0, 2, 8, 15, 77, 7 };
+			//Comparison<int> comp = (a, b) => {
+			//	if(a>b)
+			//		return 1;
+			//	if(a<b)
+			//		return -1;
+			//	return 0;
+			//};
+			//var sort = new Smoothsort<int>(comp, list, true);
+			//sort.Sort();
+			//foreach(var val in list) {
+			//	Console.Write(" {0}", val);
+			//}
 
-			Console.WriteLine();
+			//Console.WriteLine();
 
 			FridgeWarehouse fw =new FridgeWarehouse(200, 40);
-			WarehouseLogger<IWarehouse> l = new FileWarehouseLogger<IWarehouse>(fw, "log.txt");
-			//WarehouseLogger<IWarehouse> l = new ConsoleWarehouseLogger<IWarehouse>(fw);
+			//WarehouseLogger<IWarehouse> l = new FileWarehouseLogger<IWarehouse>(fw, "log.txt");
+			WarehouseLogger<IWarehouse> l = new ConsoleWarehouseLogger<IWarehouse>(fw);
 			l.OnLog += printWarehouseEvent;
 
 			var balance = fw.getBalance();
 
 			fw.storeShipment(new Shipment<IDrug>(new UnifiedDescriptor("atenolol"), 40, 10));
-			l.StopLogginng();
-
+			//l.StopLogginng();
+			Console.WriteLine();
+		
+			ConsoleExceptionLogger el = new ConsoleExceptionLogger();
+				
+			try { 
+				var res = fw.loadShipments("../../data/shipments.xml");
+				Console.WriteLine(res ? "Successful load" : "Load failed");
+			}
+			catch(DrugAccountException e) {
+				el.LogDrugAccountException(e);
+			}
+			catch(Exception e) {
+				el.LogSystemException(e);
+			}
 			Console.ReadKey();
         }
     }
