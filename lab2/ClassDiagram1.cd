@@ -1,0 +1,349 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="lab2.WarehouseBalance&lt;T&gt;" Collapsed="true">
+    <Position X="19" Y="7.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>Balance.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="IWarehouse" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="lab2.CompoundedDrug" Collapsed="true">
+    <Position X="8.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAICAAAAAAAEEgAAAAAAAIAACAJAgAAAAAAEAARA=</HashCode>
+      <FileName>Drugs.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="lab2.DrugDescriptor" Collapsed="true">
+    <Position X="6.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAgAAAAAAAAAAIAIAAAAAAAAEAABA=</HashCode>
+      <FileName>Drugs.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="lab2.UnifiedDescriptor" Collapsed="true">
+    <Position X="4" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAEAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Drugs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lab2.NonUnifiedDescriptor" Collapsed="true">
+    <Position X="7.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAABAAAAA=</HashCode>
+      <FileName>Drugs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lab2.TrademarkDescriptor" Collapsed="true">
+    <Position X="8.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAABAAAAAAAAQ=</HashCode>
+      <FileName>Drugs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lab2.ChemicalDescriptor" Collapsed="true">
+    <Position X="6.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>Drugs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lab2.PharmData" Collapsed="true">
+    <Position X="1" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAQAEECAAAAAgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Drugs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lab2.Shipment&lt;T&gt;" Collapsed="true">
+    <Position X="11" Y="2" Width="1.5" />
+    <AssociationLine Name="IDrug" Type="lab2.IDrug" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="11" Y="2.322" />
+        <Point X="10.625" Y="2.322" />
+        <Point X="10.625" Y="0.625" />
+        <Point X="8.562" Y="0.625" />
+        <Point X="8.562" Y="1" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAgIACAAAAABAAAAgAAAAAAAgAAAACAAA=</HashCode>
+      <FileName>Shipment.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="IDrug" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="lab2.Smoothsort&lt;T&gt;" Collapsed="true">
+    <Position X="1" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAwCEBAAAAAQQAAAQAAAABAhEAQAAAAAAACAAAAA=</HashCode>
+      <FileName>Smoothsort.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lab2.WarehouseLogger&lt;T&gt;" Collapsed="true">
+    <Position X="7.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAAAAAAAAAAAAAQACAAQAAAAkAAAA=</HashCode>
+      <FileName>WarehouseLogger.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="IWarehouse" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="lab2.ConsoleWarehouseLogger&lt;T&gt;" Collapsed="true">
+    <Position X="6.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>WarehouseLogger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lab2.FileWarehouseLogger&lt;T&gt;" Collapsed="true">
+    <Position X="8.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>WarehouseLogger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lab2.ExceptionLogger" Collapsed="true">
+    <Position X="1.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAQAAAgEAAAA=</HashCode>
+      <FileName>ExceptionLogger.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="lab2.ConsoleExceptionLogger" Collapsed="true">
+    <Position X="0.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ExceptionLogger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lab2.FileExceptionLogger" Collapsed="true">
+    <Position X="2.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ExceptionLogger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lab2.DrugCollection&lt;T&gt;" Collapsed="true">
+    <Position X="1" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAIACgAAAAAAABAUCAAQBAQAAAAAAAgEAAAAEABYKAA=</HashCode>
+      <FileName>DrugCollection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="lab2.DrugEnumerator&lt;T&gt;" Collapsed="true">
+    <Position X="1" Y="0.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAABAAAAECAAAAAAAAAAAAAoAAAAAABAAA=</HashCode>
+      <FileName>DrugCollection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="lab2.DrugAccountException" Collapsed="true">
+    <Position X="3.75" Y="7.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DrugAccountException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lab2.Department" Collapsed="true">
+    <Position X="3.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAACAAAAAAAAAAAAAAAAAEAAAAAAAAAABCAAA=</HashCode>
+      <FileName>Department.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="lab2.Fund" Collapsed="true">
+    <Position X="14" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAAAAAAIAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Funds.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="lab2.BudgetaryFund" Collapsed="true">
+    <Position X="16.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Funds.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lab2.TargetedFund" Collapsed="true">
+    <Position X="11.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Funds.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lab2.DepartmentFund" Collapsed="true">
+    <Position X="14" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Funds.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lab2.WarehouseEventArgs" Collapsed="true">
+    <Position X="14" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>WarehouseEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lab2.BalanceCheckArgs" Collapsed="true">
+    <Position X="14" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>WarehouseEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lab2.DrugDistributionArgs" Collapsed="true">
+    <Position X="11.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAAAAAAAAAAAAAAIgAAAAAAAAAAA=</HashCode>
+      <FileName>WarehouseEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lab2.ShipmentStoreArgs" Collapsed="true">
+    <Position X="16.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>WarehouseEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lab2.Warehouse" Collapsed="true">
+    <Position X="15.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAyAACAAgCQAgAIAQAAAAQUAAAAQAQAECAAAAAAA=</HashCode>
+      <FileName>Warehouse.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="lab2.CommonWarehouse" Collapsed="true">
+    <Position X="14" Y="8.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Warehouse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lab2.SpecialWarehouse" Collapsed="true">
+    <Position X="17" Y="8.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAASAAAAAAA=</HashCode>
+      <FileName>Warehouse.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="lab2.FridgeWarehouse" Collapsed="true">
+    <Position X="15.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Warehouse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lab2.SafeWarehouse" Collapsed="true">
+    <Position X="17.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Warehouse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lab2.ComboWarehouse" Collapsed="true">
+    <Position X="19" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Warehouse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="lab2.IBalance&lt;T&gt;" Collapsed="true">
+    <Position X="19" Y="6.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Balance.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="lab2.IDrug" Collapsed="true">
+    <Position X="7.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Drugs.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="lab2.IManufacturedDrug" Collapsed="true">
+    <Position X="6.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Drugs.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="lab2.ICompoundedDrug" Collapsed="true">
+    <Position X="8.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAQA=</HashCode>
+      <FileName>Drugs.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="lab2.IShipment&lt;T&gt;" Collapsed="true">
+    <Position X="11" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAABAAAAgAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Shipment.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="lab2.IWarehouseLogger&lt;T&gt;" Collapsed="true">
+    <Position X="7.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>WarehouseLogger.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="lab2.IExceptionLogger" Collapsed="true">
+    <Position X="1.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAgEAAAA=</HashCode>
+      <FileName>ExceptionLogger.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="lab2.IDepartment" Collapsed="true">
+    <Position X="3.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>Department.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="lab2.IFund" Collapsed="true">
+    <Position X="14" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Funds.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="lab2.IWarehouse" Collapsed="true">
+    <Position X="11.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAiAACAAACAAgAIAAAAAAAEAAAAQAAAACAAAAAAA=</HashCode>
+      <FileName>Warehouse.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="lab2.ISpecialWarehouse" Collapsed="true">
+    <Position X="11.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Warehouse.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

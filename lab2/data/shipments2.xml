@@ -1,5 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Shipments>
+  <Shipment>
+    <INN>atenolol</INN>
+    <Volume>40</Volume>
+    <Price>10</Price>
+  </Shipment>
   <Shipment>
     <INN>pazopanib</INN>
     <Volume>20</Volume>
@@ -8,11 +13,11 @@
   <Shipment>
     <INN>atenolol</INN>
     <Volume>30</Volume>
-    <Price>70.0</Price>
+    <Price>70</Price>
   </Shipment>
   <Shipment>
     <CompoundCode>doxorubicin.atenolol</CompoundCode>
     <Volume>80</Volume>
-    <Price>120.0</Price>
+    <Price>120</Price>
   </Shipment>
 </Shipments>

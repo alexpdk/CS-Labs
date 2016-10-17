@@ -31,6 +31,11 @@ namespace lab2 {
 		/// <returns>Удалось ли разместить на складе указанные в файле партии</returns>
 		bool loadShipments(string path);
 		/// <summary>
+		/// Выгрузить данные о партиях медикаментов в файл конфигурации.
+		/// </summary>
+		/// <param name="path">Путь к файлу</param>
+		void saveShipments(string path);
+		/// <summary>
 		/// Загрузить партию медикаментов на склад. Если на складе отстуствуют необходимые 
 		/// для партии условия хранения или недостаточно место, партия на складе не размещается.
 		/// </summary>
@@ -198,6 +203,7 @@ namespace lab2 {
 					new XElement("Price", sh.getPrice())
 				));
 			}
+			all.Save(path);
 		}
 		public virtual bool storeShipment(IShipment<IDrug> shipment) {
 			if(space >= shipment.getVolume()) {
@@ -330,40 +336,6 @@ namespace lab2 {
 			}else {
 				return base.storeShipment(shipment);
 			}
-		}
-	}
-	/// <summary>
-	/// Класс для передачи аргументов в обработчики событий класса Склад
-	/// </summary>
-	public abstract class WarehouseEventArgs: EventArgs {
-		public readonly Warehouse warehouse;
-		public WarehouseEventArgs(Warehouse ware) {
-			warehouse = ware;
-		}
-	}
-	// Производные классы описывают аргументы для различных типов событий.
-	public class BalanceCheckArgs: WarehouseEventArgs {
-		public readonly double balance;
-		public BalanceCheckArgs(Warehouse warehouse, double balance):base(warehouse) {
-			this.balance = balance;
-		}
-	}
-	public class DrugDistributionArgs: WarehouseEventArgs {
-		public readonly IDrug drug;
-		public readonly int distributed;
-		public readonly bool success;
-		public DrugDistributionArgs(Warehouse warehouse, IDrug drug, int distributed, bool success): base(warehouse) {
-			this.drug = drug;
-			this.distributed = distributed;
-			this.success = success;
-		}
-	}
-	public class ShipmentStoreArgs: WarehouseEventArgs {
-		public readonly IShipment<IDrug> shipment;
-		public readonly bool success;
-		public ShipmentStoreArgs(Warehouse warehouse, IShipment<IDrug> shipment, bool success): base(warehouse) {
-			this.shipment = shipment;
-			this.success = success;
 		}
 	}
 }

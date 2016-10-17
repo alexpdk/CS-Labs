@@ -23,10 +23,20 @@ namespace lab2 {
 			warehouse.OnDrugDistribution += PrintMessage;
 			warehouse.OnShipmentStore += PrintMessage;
 		}
+
+		public IWarehouse IWarehouse {
+			get {
+				throw new System.NotImplementedException();
+			}
+
+			set {
+			}
+		}
+
 		public virtual void PrintMessage(WarehouseEventArgs args) {
 			OnLog(writer, args);
 		}
-		public virtual void StopLogginng() {
+		public virtual void StopLogging() {
 			writer.Close();
 		}
 	}

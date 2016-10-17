@@ -8,7 +8,8 @@ namespace lab2 {
 	/// <summary>
 	/// Интерфейс для медикаментов
 	/// </summary>
-	public interface IDrug : ICloneable, IEquatable<IDrug>{
+	public interface IDrug : ICloneable, IEquatable<IDrug> {
+
 		/// <returns>Является ли медикамент наркотическим</returns>
 		bool isNarcotic();
 		/// <returns>Требует ли медикамент хранения в охлаждённом состоянии</returns>
@@ -223,7 +224,8 @@ namespace lab2 {
 			{"atenolol", USUAL_CONDITIONS},
 			{"procaine", NARCOTIC},
 			{"cocaine", NARCOTIC},
-			{"Certolizumab pegol", USUAL_CONDITIONS}
+			{"Certolizumab pegol", USUAL_CONDITIONS},
+			{"doxorubicin", USUAL_CONDITIONS}
 		};
 		/// <summary>
 		/// Список МНН закупаемых медикаментов

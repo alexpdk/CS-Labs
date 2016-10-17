@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Balance.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="Drugs.cs" />
     <Compile Include="ExceptionLogger.cs" />
     <Compile Include="Funds.cs" />
+    <Compile Include="WarehouseEventArgs.cs" />
     <Compile Include="WarehouseLogger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

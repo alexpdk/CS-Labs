@@ -25,6 +25,16 @@ namespace lab2 {
 		/// Проверяемый склад.
 		/// </summary>
 		private T warehouse;
+
+		public IWarehouse IWarehouse {
+			get {
+				throw new System.NotImplementedException();
+			}
+
+			set {
+			}
+		}
+
 		public bool checkBalance(double expected) {
 			return Math.Abs(warehouse.getBalance() - expected) < 0.0001;
 		}

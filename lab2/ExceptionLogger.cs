@@ -9,15 +9,19 @@ namespace lab2 {
 	public interface IExceptionLogger {
 		void LogDrugAccountException(DrugAccountException e);
 		void LogSystemException(Exception e);
+		void StopLogging();
 	}
 	public abstract class ExceptionLogger : IExceptionLogger {
 		protected TextWriter writer;
 
 		public void LogDrugAccountException(DrugAccountException e) {
-			writer.WriteLine("Drug Account Exception: {0}\n{1}",e.Message,e.StackTrace);
+			writer.WriteLine("\nDrug Account Exception: {0}\n{1}",e.Message,e.StackTrace);
 		}
 		public void LogSystemException(Exception e) {
-			writer.WriteLine("{0}: {1}\n{2}",e.GetType(),e.Message,e.StackTrace);
+			writer.WriteLine("\n{0}: {1}\n{2}",e.GetType(),e.Message,e.StackTrace);
+		}
+		public virtual void StopLogging() {
+			writer.Close();
 		}
 	}
 	public class ConsoleExceptionLogger : ExceptionLogger {

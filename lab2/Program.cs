@@ -120,6 +120,7 @@ namespace lab2
 			Console.WriteLine("\nNarcotics from collection:");
 			Console.WriteLine(narcotics);
 
+			//Console.WriteLine();
 			//var list = new List<int> { 2, 6, 12, 9, 0, 2, 8, 15, 77, 7 };
 			//Comparison<int> comp = (a, b) => {
 			//	if(a>b)
@@ -133,7 +134,6 @@ namespace lab2
 			//foreach(var val in list) {
 			//	Console.Write(" {0}", val);
 			//}
-
 			//Console.WriteLine();
 
 			FridgeWarehouse fw =new FridgeWarehouse(200, 40);
@@ -144,14 +144,16 @@ namespace lab2
 			var balance = fw.getBalance();
 
 			fw.storeShipment(new Shipment<IDrug>(new UnifiedDescriptor("atenolol"), 40, 10));
-			//l.StopLogginng();
+			l.StopLogging();
 			Console.WriteLine();
 		
-			ConsoleExceptionLogger el = new ConsoleExceptionLogger();
+			//ConsoleExceptionLogger el = new ConsoleExceptionLogger();
+			FileExceptionLogger el = new FileExceptionLogger("log.txt");
 				
 			try { 
 				var res = fw.loadShipments("../../data/shipments.xml");
 				Console.WriteLine(res ? "Successful load" : "Load failed");
+				fw.saveShipments("../../data/shipments3.xml");
 			}
 			catch(DrugAccountException e) {
 				el.LogDrugAccountException(e);
@@ -159,6 +161,7 @@ namespace lab2
 			catch(Exception e) {
 				el.LogSystemException(e);
 			}
+			el.StopLogging();
 			Console.ReadKey();
         }
     }
