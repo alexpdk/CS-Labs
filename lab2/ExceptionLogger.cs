@@ -18,7 +18,8 @@ namespace lab2 {
 			writer.WriteLine("\nDrug Account Exception: {0}\n{1}",e.Message,e.StackTrace);
 		}
 		public void LogSystemException(Exception e) {
-			writer.WriteLine("\n{0}: {1}\n{2}",e.GetType(),e.Message,e.StackTrace);
+			writer.Write("\n{0} ", DateTime.Now);
+			writer.WriteLine("{0}: {1}\n{2}",e.GetType(),e.Message,e.StackTrace);
 		}
 		public virtual void StopLogging() {
 			writer.Close();

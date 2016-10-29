@@ -24,15 +24,6 @@ namespace lab2 {
 			warehouse.OnShipmentStore += PrintMessage;
 		}
 
-		public IWarehouse IWarehouse {
-			get {
-				throw new System.NotImplementedException();
-			}
-
-			set {
-			}
-		}
-
 		public virtual void PrintMessage(WarehouseEventArgs args) {
 			OnLog(writer, args);
 		}

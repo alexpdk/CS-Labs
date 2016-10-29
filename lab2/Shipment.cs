@@ -58,15 +58,6 @@ namespace lab2 {
 			}
 		}
 
-		public IDrug IDrug {
-			get {
-				throw new System.NotImplementedException();
-			}
-
-			set {
-			}
-		}
-
 		/// <summary></summary>
 		/// <param name="_drug">Препарат</param>
 		/// <param name="_volume">Размер партии</param>

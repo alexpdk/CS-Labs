@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace lab2
 {
@@ -9,8 +11,9 @@ namespace lab2
 		static int compareDrugs(IDrug d1, IDrug d2) {
 			bool man1 = d1 is IManufacturedDrug, man2 = d2 is IManufacturedDrug;
 			if(man1 && man2) {
-				return (d1 as IManufacturedDrug).INN.CompareTo((d2 as IManufacturedDrug).INN);
-			}else if(!man1 && !man2) {
+				//return (d1 as IManufacturedDrug).INN.CompareTo((d2 as IManufacturedDrug).INN);
+				return d1.ToString().CompareTo(d2.ToString());
+			} else if(!man1 && !man2) {
 				return (d1 as ICompoundedDrug).CompoundCode.CompareTo((d2 as ICompoundedDrug).CompoundCode);
 			}else if(man1 && !man2) {
 				return -1; //IManufacturedDrug considered less than ICompoundedDrug
@@ -66,6 +69,45 @@ namespace lab2
 			Console.WriteLine("Drug was successfully distributed");
 			return true;
 		}
+		static async void SortDrugCollection(DrugCollection<IDrug> dC) {
+			//// using delegate to sort by type/name
+			Smoothsort<IDrug> sort = null;
+			Task task = null;
+			DrugCollection<IDrug>.SortDrugList smoothSort = (_list) => {
+				sort = new Smoothsort<IDrug>(compareDrugs, _list);
+				task = sort.Sort();
+			};
+			dC.SpecifySortMethod(smoothSort);
+			dC.Sort();
+			await task;
+			Console.WriteLine("\nDrug collection sorted");
+			//Console.WriteLine(new DrugCollection<IDrug>(sort.SortedList).
+			//		Stringify(stringifyMedication, " | "));
+			Console.WriteLine();
+		}
+		static async void SortNumbers() {
+			var list = new List<int> { 2, 6, 12, 9, 0, 2, 8, 15, 77, 7 };
+			var rnd = new Random();
+			for(int i=0; i<200000; i++) list.Add(rnd.Next(200));
+
+			Comparison<int> comp = (a, b) => {
+				if(a>b)
+					return 1;
+				if(a<b)
+					return -1;
+				return 0;
+			};
+			var sort = new Smoothsort<int>(comp, list, print:false);
+			Console.WriteLine("Sort started");
+			var task = sort.Sort(new Progress<int>(p=>Console.WriteLine("{0}%",p)));
+			await task;
+
+			Console.WriteLine("Sort completed");
+			//foreach(var val in sort.SortedList) {
+			//	Console.Write(" {0}", val);
+			//}
+			Console.WriteLine();  
+		}
         static void Main(string[] args)
         {
 			DrugCollection<IDrug> dC = new DrugCollection<IDrug>(new List<IDrug> {
@@ -73,6 +115,7 @@ namespace lab2
 				new TrademarkDescriptor("procaine-A","PharmSharp","procaine"),
 			});
 			dC.Add(new ChemicalDescriptor("CDP870","Certolizumab pegol"));
+
 			// IEnumerable, implicit IEnumerator
 			//foreach(var drug in dC) {
 			//	Console.WriteLine("{0}",drug);
@@ -97,19 +140,15 @@ namespace lab2
 			dC.Add(compounded);
 			dC.Add(new UnifiedDescriptor("atenolol"));
 
-			// using Func to print array
-			Func<IDrug, string> drug_str = stringifyMedication;
-			Console.WriteLine("Unsorted array");
-			Console.WriteLine(dC.Stringify(drug_str, " | "));
+			//Increase collection size
+			dC.Add(TrademarkDescriptor.GenerateIndexedList(50000, "Doxedin-","Synthes","doxorubicin"));
 
-			//// using delegate to sort by type/name
-			DrugCollection<IDrug>.SortDrugList smoothSort = (_list) => {
-				new Smoothsort<IDrug>(compareDrugs, _list).Sort();
-			};
-			dC.SpecifySortMethod(smoothSort);
-			dC.Sort();
-			Console.WriteLine("\nSorted array");
-			Console.WriteLine(dC.Stringify(drug_str, " | "));
+			//// using Func to print array
+			//Func<IDrug, string> drug_str = stringifyMedication;
+			//Console.WriteLine("Unsorted array");
+			//Console.WriteLine(dC.Stringify(drug_str, " | "));
+
+			SortDrugCollection(dC);
 
 			// using Action to select narcotics
 			DrugCollection<IDrug> narcotics = new DrugCollection<IDrug>();
@@ -120,40 +159,29 @@ namespace lab2
 			Console.WriteLine("\nNarcotics from collection:");
 			Console.WriteLine(narcotics);
 
-			//Console.WriteLine();
-			//var list = new List<int> { 2, 6, 12, 9, 0, 2, 8, 15, 77, 7 };
-			//Comparison<int> comp = (a, b) => {
-			//	if(a>b)
-			//		return 1;
-			//	if(a<b)
-			//		return -1;
-			//	return 0;
-			//};
-			//var sort = new Smoothsort<int>(comp, list, true);
-			//sort.Sort();
-			//foreach(var val in list) {
-			//	Console.Write(" {0}", val);
-			//}
-			//Console.WriteLine();
+			Console.WriteLine();
+			//SortNumbers();
+			//Console.WriteLine("Main thread continues");
 
-			FridgeWarehouse fw =new FridgeWarehouse(200, 40);
+			FridgeWarehouse fw = new FridgeWarehouse(200, 40);
 			//WarehouseLogger<IWarehouse> l = new FileWarehouseLogger<IWarehouse>(fw, "log.txt");
 			WarehouseLogger<IWarehouse> l = new ConsoleWarehouseLogger<IWarehouse>(fw);
-			l.OnLog += printWarehouseEvent;
+			l.OnLog+=printWarehouseEvent;
 
 			var balance = fw.getBalance();
 
 			fw.storeShipment(new Shipment<IDrug>(new UnifiedDescriptor("atenolol"), 40, 10));
 			l.StopLogging();
 			Console.WriteLine();
-		
+
 			//ConsoleExceptionLogger el = new ConsoleExceptionLogger();
 			FileExceptionLogger el = new FileExceptionLogger("log.txt");
-				
-			try { 
+
+			try {
 				var res = fw.loadShipments("../../data/shipments.xml");
 				Console.WriteLine(res ? "Successful load" : "Load failed");
 				fw.saveShipments("../../data/shipments3.xml");
+				//fw.saveShipments("C:/");
 			}
 			catch(DrugAccountException e) {
 				el.LogDrugAccountException(e);

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace lab2 {
 	/// <summary>
@@ -17,7 +20,7 @@ namespace lab2 {
 		/// <summary>
 		/// Сортируемый список
 		/// </summary>
-		private IList<T> list;
+		private List<T> list;
 		/// <summary>
 		/// Список чисел Леонардо от 1 до первого числа, превышающего размер сортируемого списка
 		/// </summary>
@@ -30,9 +33,17 @@ namespace lab2 {
 		/// Флаг отладочной печати процесса сортировки
 		/// </summary>
 		private bool print;
-		public Smoothsort(Comparison<T> comp, IList<T> list, bool print=false) {
+		/// <summary>
+		/// Завершена ли сортировка
+		/// </summary>
+		private bool completed = false;
+
+		public List<T> SortedList {
+			get { return completed ? list : null;}
+		}
+		public Smoothsort(Comparison<T> comp, List<T> list, bool print=false) {
 			this.comp = comp;
-			this.list = list;
+			this.list = list.Select(v=>v).ToList<T>();
 			this.print = print;
 			leos = new List<int>();
 			sizes = new List<int>();
@@ -180,14 +191,32 @@ namespace lab2 {
 		/// <summary>
 		/// Выполнить плавную сортировку списка по возрастанию
 		/// </summary>
-		public void Sort() {
-			genLeonardo();
-			for(int i=0; i<list.Count; i++) {
-				insertElem(i);
-			}
-			for(int i=list.Count-1; i>=0; i--) {
-				removeElem(i);
-			}
+		public Task Sort(IProgress<int> progress=null) {
+			return Task.Run(()=>{
+				genLeonardo();
+				int step = list.Count / 50;
+				if(step == 0 && progress!=null) {
+					//Console.WriteLine("Smootsort.Sort: Too small list to report progress");
+					//Debug.WriteLine("Smootsort.Sort: Too small list to report progress");
+					progress = null;
+				}
+				var repI = 0;
+				for(int i=0; i<list.Count; i++) {
+					insertElem(i);
+					if(progress != null && i/step != repI) {
+						repI = i / step;
+						progress.Report(repI);
+					}
+				}
+				for(int i=list.Count-1, j=0; i>=0; i--, j++) {
+					removeElem(i);
+					if(progress!=null && j/step+50!=repI) {
+						repI = j/step+50;
+						progress.Report(repI);
+					}
+				}
+				completed = true;
+			});
 		}
 		/// <returns>Превосходит ли элемент с индексом i1 элемент с индексом i2</returns>
 		private bool valMore(int i1, int i2) {

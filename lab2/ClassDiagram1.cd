@@ -62,42 +62,20 @@
       <FileName>Drugs.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="lab2.Shipment&lt;T&gt;" Collapsed="true">
+  <Class Name="lab2.Shipment&lt;T&gt;">
     <Position X="11" Y="2" Width="1.5" />
-    <AssociationLine Name="IDrug" Type="lab2.IDrug" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="11" Y="2.322" />
-        <Point X="10.625" Y="2.322" />
-        <Point X="10.625" Y="0.625" />
-        <Point X="8.562" Y="0.625" />
-        <Point X="8.562" Y="1" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAABAAAAAAAAgIACAAAAABAAAAgAAAAAAAgAAAACAAA=</HashCode>
+      <HashCode>AAABAAAAAAAAgAACAAAAABAAAAgAAAAAAAgAAAACAAA=</HashCode>
       <FileName>Shipment.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="IDrug" />
-    </ShowAsAssociation>
     <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="lab2.Smoothsort&lt;T&gt;" Collapsed="true">
-    <Position X="1" Y="5.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAQAAwCEBAAAAAQQAAAQAAAABAhEAQAAAAAAACAAAAA=</HashCode>
-      <FileName>Smoothsort.cs</FileName>
-    </TypeIdentifier>
   </Class>
   <Class Name="lab2.WarehouseLogger&lt;T&gt;" Collapsed="true">
     <Position X="7.5" Y="8.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAEAAAAAAAAAAAAAAAAQACAAQAAAAkAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAQACAAQAAAAkAAAA=</HashCode>
       <FileName>WarehouseLogger.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="IWarehouse" />
-    </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="lab2.ConsoleWarehouseLogger&lt;T&gt;" Collapsed="true">
@@ -183,7 +161,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="lab2.TargetedFund" Collapsed="true">
-    <Position X="11.75" Y="3.25" Width="1.5" />
+    <Position X="9.75" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
       <FileName>Funds.cs</FileName>
@@ -266,6 +244,13 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAACAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Warehouse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lab2.Smoothsort&lt;T&gt;" Collapsed="true">
+    <Position X="1" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAwCEBAAAAAQQAAAQAAAABAhEAQAAAAAAACAAAAA=</HashCode>
+      <FileName>Smoothsort.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="lab2.IBalance&lt;T&gt;" Collapsed="true">

@@ -188,6 +188,12 @@ namespace lab2 {
 			trademark = _trademark;
 			company = _company;
 		}
+		public static List<IDrug> GenerateIndexedList(int N, string tr_base, string company, string inn) {
+			var list = new List<IDrug>();
+			for(int i=0; i<N; i++) list.Add(new TrademarkDescriptor(
+				tr_base+i, company, inn));
+			return list;
+		}
 		public override string ToString() {
 			return string.Format("{0}: {1}({2})",company,trademark,INN);
 		}

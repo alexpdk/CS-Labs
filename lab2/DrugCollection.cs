@@ -52,6 +52,9 @@ namespace lab2 {
 				list.Add(drug);
 			}
 		}
+		public void Add(IList<T> _list) {
+			list.AddRange(_list);
+		}
 		public void Clear() {
 			list.Clear();
 		}

@@ -170,21 +170,21 @@ namespace lab2 {
 			XDocument doc = XDocument.Load(path);
 			bool s = true;
 			try {
-				var arr = doc.Root.Elements("Shipment").Select(x=>new {
+				var list = doc.Root.Elements("Shipment").Select(x=>new {
 					code = (string) (x.Element("INN") ?? x.Element("CompoundCode")),
 					codeType = x.Element("INN")?.Name ?? "CompoundCode",
 					volume = (int) x.Element("Volume"),
 					price =(double)x.Element("Price")
-				}).ToArray();
+				});
 
-				//emitShipmentEvent = false;
-				foreach(var sh in arr) {
+				emitShipmentEvent = false;
+				foreach(var sh in list) {
 					if(sh.code == null) throw new XmlException("Shipment config file contains entity without INN && CompoundCode");
 
 					s = storeShipment(new Shipment<IDrug>(
 						(sh.codeType=="INN") ? new UnifiedDescriptor(sh.code) as IDrug
 						                     : new CompoundedDrug(sh.code) as IDrug, 
-					sh.volume, sh.price)) && s;
+						sh.volume, sh.price)) && s;
 				}
 				emitShipmentEvent = true;
 			}
