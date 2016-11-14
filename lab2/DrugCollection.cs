@@ -10,9 +10,9 @@ namespace lab2 {
 	/// Обобщённая коллекция, позволяет хранить списки медикаментов без дупликатов.
 	/// </summary>
 	/// <typeparam name="T">Тип медикаментов</typeparam>
+	[Serializable]
 	public class DrugCollection<T> : ICollection<T> where T : IDrug{
 		private List<T> list;
-		private bool read_only;
 
 		/// <summary>
 		/// Предоставляемый тип для процедур сортировки списка медикаментоа
@@ -39,7 +39,7 @@ namespace lab2 {
 		}
 		public bool IsReadOnly {
 			get {
-				return read_only;
+				return false;
 			}
 		}
 		public DrugCollection(List<T> _list){

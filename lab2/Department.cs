@@ -35,8 +35,8 @@ namespace lab2 {
 			}
 		}
 		public int getRequiredNumber(IDrug drug) {
-			var key = (drug is IManufacturedDrug) ? (drug as IManufacturedDrug).INN
-				: (drug as ICompoundedDrug).CompoundCode;
+			var key = (drug is AbstractManufacturedDrug) ? (drug as AbstractManufacturedDrug).INN
+				: (drug as AbstractCompoundedDrug).CompoundCode;
 			if(needs.ContainsKey(key)) {
 				return needs[key];
 			}

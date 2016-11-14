@@ -1,0 +1,29 @@
+{
+  "$type": "lab2.DrugCollection`1[[lab2.Drug, ConsoleApplication]], ConsoleApplication",
+  "$values": [
+    {
+      "$type": "lab2.UnifiedDescriptor, ConsoleApplication",
+      "INN": "lidocaine"
+    },
+    {
+      "$type": "lab2.TrademarkDescriptor, ConsoleApplication",
+      "trademark": "procaine-A",
+      "company": "PharmSharp",
+      "INN": "procaine"
+    },
+    {
+      "$type": "lab2.ChemicalDescriptor, ConsoleApplication",
+      "chemName": "CDP870",
+      "INN": "Certolizumab pegol"
+    },
+    {
+      "$type": "lab2.CompoundedDrug, ConsoleApplication",
+      "sertified": false,
+      "CompoundCode": "lidocaine.procaine.Certolizumab pegol"
+    },
+    {
+      "$type": "lab2.UnifiedDescriptor, ConsoleApplication",
+      "INN": "atenolol"
+    }
+  ]
+}

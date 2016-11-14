@@ -198,7 +198,7 @@ namespace lab2 {
 			foreach(var sh in shipments) {
 				var drug = sh.getDrug();
 				all.Add(new XElement("Shipment", 
-					new XElement((drug is IManufacturedDrug) ? "INN" : "CompoundCode", PharmData.Code(drug)),
+					new XElement((drug is AbstractManufacturedDrug) ? "INN" : "CompoundCode", PharmData.Code(drug)),
 					new XElement("Volume", sh.getVolume()),
 					new XElement("Price", sh.getPrice())
 				));
