@@ -37,6 +37,14 @@ namespace lab2 {
 			}
 			return new DrugCollection<T2>(l2);
 		}
+		public DrugCollection<Drug> UnwrapCollection(){
+			var l2 = new List<Drug>();
+			foreach(var item in list) {
+				l2.Add((item as DrugWrapper).unwrap());
+			}
+			return new DrugCollection<Drug>(l2);
+		}
+
 		public bool IsReadOnly {
 			get {
 				return false;
@@ -104,6 +112,14 @@ namespace lab2 {
 			set {
 				list[index] = value;
 			}
+		}
+
+		public DrugCollection<Drug> WrapCollection() {
+			var l2 = new List<Drug>();
+			foreach(var item in list) {
+				l2.Add(new DrugWrapper(item as Drug));
+			}
+			return new DrugCollection<Drug>(l2);
 		}
 	}
 	public class DrugEnumerator<T> : IEnumerator<T> where T : IDrug {

@@ -145,6 +145,7 @@ namespace lab2
 			}
 			actionsReady = true;
 		}
+
         static void Main(string[] args)
         {
 			DrugCollection<IDrug> dC = new DrugCollection<IDrug>(new List<IDrug> {
@@ -232,31 +233,35 @@ namespace lab2
 
 			var casted = dC.Downcast<Drug>();
 
-			Console.WriteLine("dC size={0}",dC.Count);
+			//Console.WriteLine("dC size={0}",dC.Count);
 			var jsonSerial = new DrugJSONSerializer();
 			var json = jsonSerial.Serialize(casted);
 			jsonSerial.SerializeToFile(casted, "../../data/drugs.json");
 			Console.WriteLine(json);
 
-			var xmlSerial = new DrugXMLSerializer();
-			var xml = xmlSerial.Serialize(casted);
-			Console.WriteLine(xml);
-			Console.WriteLine();
-
 			var binSerial = new DrugBinSerializer();
 			binSerial.SerializeToFile(casted, "../../data/drugs.bin");
 
+			var xmlSerial = new DrugXMLSerializer();
+			var xml = xmlSerial.Serialize(dC.WrapCollection());
+			xmlSerial.SerializeToFile(dC.WrapCollection(), "../../data/drugs.xml");
+			Console.WriteLine(xml);
+			Console.WriteLine();
+
+			
 			//var uni = @"{
 			//	""$type"": ""lab2.UnifiedDescriptor, ConsoleApplication"",
 			//	""INN"": ""procaine""
 			//}";
 			//var drug1 = jsonSerial.DeserializeDrug(uni);
 			//Console.WriteLine(drug1.ToString());
-			
-			var dC2 = jsonSerial.Deserialize(json);
+
+			//var dC2 = jsonSerial.Deserialize(json);
 			//var dC2 = xmlSerial.Deserialize(xml);
 			//var dC2 = jsonSerial.DeserializeFromFile("../../data/drugs.json");
 			//var dC2 = binSerial.DeserializeFromFile("../../data/drugs.bin");
+			//var dC2 = xmlSerial.Deserialize(xml).UnwrapCollection();
+			var dC2 = xmlSerial.DeserializeFromFile("../../data/drugs.xml").UnwrapCollection();
 			Console.WriteLine("dC2 size={0}",dC2.Count);
 			Console.WriteLine(dC2.ToString());
 			Console.ReadKey();

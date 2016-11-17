@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema 
+    elementFormDefault="qualified"
+    xmlns="drugSchema"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:ds="drugSchema"
+    targetNamespace="drugSchema">
+  
+  <!--<xs:import namespace="lab2"/>-->
+  <!-- definition of used drug wrappers -->
+  <xs:element name="unified">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="INN" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="trademark">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="INN" type="xs:string"/>
+        <xs:element name="trademark" type="xs:string"/>
+        <xs:element name="company" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="chemical">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="INN" type="xs:string"/>
+        <xs:element name="chemName" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="compounded">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CompoundCode" type="xs:string"/>
+        <xs:element name="sertified" type="xs:boolean"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--<xs:element name="Drug">-->
+    <xs:complexType name="DrugWrapper">
+      <xs:choice>
+        <xs:element ref="ds:unified"/>
+        <xs:element ref="ds:trademark"/>
+        <xs:element ref="ds:chemical"/>
+        <xs:element ref="ds:compounded"/>
+      </xs:choice>
+    </xs:complexType>
+  <!--</xs:element>-->
+
+
+  <!-- definition of collection-->
+  <xs:element name="ArrayOfDrug">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Drug" type="ds:DrugWrapper" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfDrug xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="drugSchema">
+  <Drug xsi:type="DrugWrapper">
+    <unified>
+      <INN>lidocaine</INN>
+    </unified>
+  </Drug>
+  <Drug xsi:type="DrugWrapper">
+    <trademark>
+      <INN>procaine</INN>
+      <trademark>procaine-A</trademark>
+      <company>PharmSharp</company>
+    </trademark>
+  </Drug>
+  <Drug xsi:type="DrugWrapper">
+    <chemical>
+      <INN>Certolizumab pegol</INN>
+      <chemName>CDP870</chemName>
+    </chemical>
+  </Drug>
+  <Drug xsi:type="DrugWrapper">
+    <compounded>
+      <CompoundCode>lidocaine.procaine.Certolizumab pegol</CompoundCode>
+      <sertified>false</sertified>
+    </compounded>
+  </Drug>
+  <Drug xsi:type="DrugWrapper">
+    <unified>
+      <INN>atenolol</INN>
+    </unified>
+  </Drug>
+</ArrayOfDrug>

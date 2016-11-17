@@ -69,6 +69,9 @@
     <None Include="ClassDiagram1.cd" />
     <None Include="data\drugs.bin" />
     <None Include="data\drugs.json" />
+    <None Include="data\drugs.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -89,6 +92,9 @@
     <Compile Include="Warehouse.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="data\drugs.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="data\shipments.xml" />
     <Content Include="data\shipments2.xml">
       <SubType>Designer</SubType>
