@@ -1,0 +1,22 @@
+Shipment of lidocaine volume=50 cost=10000  stored successfully.
+Balance checked: balance=10000
+Shipment of insulin volume=60 cost=4800 couldn't be stored.
+Shipment of insulin volume=60 cost=4800  stored successfully.
+Shipment of lidocaine volume=50 cost=10000 stored successfully.
+Balance checked: balance=10000
+Shipment of insulin volume=60 cost=4800 couldn't be stored.
+Shipment of insulin volume=60 cost=4800 stored successfully.
+Shipment of lidocaine volume=50 cost=10000 stored successfully.
+Balance checked: balance=10000
+Shipment of insulin volume=60 cost=4800 couldn't be stored.
+Shipment of insulin volume=60 cost=4800 stored successfully.
+20 of lidocaine distributed successfully.
+60 of insulin couldn't be provided.
+Balance checked: balance=6000
+Shipment of lidocaine volume=50 cost=10000 stored successfully.
+Balance checked: balance=10000
+Shipment of insulin volume=60 cost=4800 couldn't be stored.
+Shipment of insulin volume=60 cost=4800 stored successfully.
+20 of lidocaine distributed successfully.
+20 of insulin couldn't be provided.
+Balance checked: balance=6000

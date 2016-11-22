@@ -149,10 +149,10 @@ namespace lab2 {
 			return INN.GetHashCode();
 		}
 		override public bool isNarcotic() {
-			return (PharmData.conditions[INN] & PharmData.NARCOTIC) == 1;
+			return (PharmData.conditions[INN] & PharmData.NARCOTIC) > 0;
 		}
 		override public bool requiresFridge() {
-			return (PharmData.conditions[INN] & PharmData.KEEP_COLD) == 1;
+			return (PharmData.conditions[INN] & PharmData.KEEP_COLD) > 0;
 		}
 	}
 	/// <summary>
@@ -259,7 +259,8 @@ namespace lab2 {
 			{"cocaine", NARCOTIC},
 			{"lidocaine", USUAL_CONDITIONS},
 			{"Certolizumab pegol", USUAL_CONDITIONS},
-			{"doxorubicin", USUAL_CONDITIONS}
+			{"doxorubicin", USUAL_CONDITIONS},
+			{"insulin", KEEP_COLD }
 		};
 		/// <summary>
 		/// Список МНН закупаемых медикаментов

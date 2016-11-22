@@ -40,7 +40,7 @@ namespace lab2 {
 			if(needs.ContainsKey(key)) {
 				return needs[key];
 			}
-			else return 0;
+			else return -1;
 		}
 		public bool isBudgetary() {
 			return budgetary;

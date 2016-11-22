@@ -50,4 +50,14 @@ namespace lab2 {
 			}
 		}
 	}
+	public class StringWarehouseLogger<T>: WarehouseLogger<T> where T: IWarehouse {
+		private StringBuilder SB = new StringBuilder();
+
+		public StringWarehouseLogger(T warehouse):base(warehouse) {
+			writer = new StringWriter(SB);
+		}
+		public String getLog() {
+			return SB.ToString();
+		}
+	}
 }

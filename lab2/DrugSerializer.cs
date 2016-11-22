@@ -65,6 +65,7 @@ namespace lab2 {
 	class DrugXMLSerializer: DrugSerializer {
 
 		private bool validationError = false;
+		public string xsdPath="../../../data/drugs.xsd";
 	
 		private XmlSerializer serializer = new XmlSerializer(
 			typeof(DrugCollection<Drug>),
@@ -86,7 +87,7 @@ namespace lab2 {
 			VaildateXmlFile(path);
 			if(validationError) {
 				Console.WriteLine("Error!\n\n\n\n");
-				return new DrugCollection<Drug>();
+				return null;
 			}
 
 			using (var reader = new StreamReader(path))
@@ -114,7 +115,7 @@ namespace lab2 {
 			XmlSchemaSet sc = new XmlSchemaSet();
 
 			// Add the schema to the collection.
-			sc.Add("drugSchema", "../../data/drugs.xsd");
+			sc.Add("drugSchema", xsdPath);
 
 			// Set the validation settings.
 			XmlReaderSettings settings = new XmlReaderSettings();
@@ -180,7 +181,8 @@ namespace lab2 {
 			throw new NotImplementedException();
 		}
 		public override bool Equals(IDrug other) {
-			return false;
+			return (other is DrugWrapper) && (other as DrugWrapper).unwrap()
+				.Equals(unwrap());
 		}
 		public override bool isNarcotic() {
 			throw new NotImplementedException();

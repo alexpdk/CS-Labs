@@ -6,7 +6,6 @@
     xmlns:ds="drugSchema"
     targetNamespace="drugSchema">
   
-  <!--<xs:import namespace="lab2"/>-->
   <!-- definition of used drug wrappers -->
   <xs:element name="unified">
     <xs:complexType>
@@ -25,7 +24,7 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-
+ 
   <xs:element name="chemical">
     <xs:complexType>
       <xs:sequence>

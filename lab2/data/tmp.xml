@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfDrug xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="drugSchema">
   <Drug xsi:type="DrugWrapper">
     <unified>
@@ -18,4 +18,4 @@
       <chemName>CP870</chemName>
     </chemical>
   </Drug>
-</ArrayOfDrug>
+<Drug2 xmlns="" /></ArrayOfDrug>

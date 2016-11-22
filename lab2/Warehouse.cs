@@ -98,7 +98,7 @@ namespace lab2 {
 			}
 			set {
 				if(value < 0) throw new System.ArgumentException(
-					"New space not allowes to store all shipments", "newSpace"
+					"New space not allowes to store all shipments"
 				);
 				space = value;
 			}
@@ -110,11 +110,20 @@ namespace lab2 {
 		protected void raiseOnBalanceCount(double balance) {
 			if(emitBalanceEvent) OnBalanceCount(new BalanceCheckArgs(this, balance));
 		}
+		protected void raiseOnBalanceCount(WarehouseEventArgs args) {
+			if(emitBalanceEvent) OnBalanceCount(args);
+		}
 		protected void raiseOnDrugDistribution(IDrug drug, int distributed, bool success) {
 			OnDrugDistribution(new DrugDistributionArgs(this, drug, distributed, success));
 		}
+		protected void raiseOnDrugDistribution(WarehouseEventArgs args) {
+			OnDrugDistribution(args);
+		}
 		protected void raiseOnShipmentStore(IShipment<IDrug> shipment, bool success) {
 			if(emitShipmentEvent) OnShipmentStore(new ShipmentStoreArgs(this, shipment, success));
+		}
+		protected void raiseOnShipmentStore(WarehouseEventArgs args) {
+			if(emitShipmentEvent) OnShipmentStore(args);
 		}
 
 		/// <summary>
@@ -140,12 +149,13 @@ namespace lab2 {
 			return new Warehouse(space);
 		}
 		public virtual bool distributeDrug(IDrug drug, int requiredNumber) {
-			var proper = (List<IShipment<IDrug>>)shipments.Where(
-				shipment=>shipment.getDrug().Equals(drug));
+			var proper = shipments.Where(
+				shipment=>shipment.getDrug().Equals(drug)
+			).ToList<IShipment<IDrug>>();
 			int requiredCopy = requiredNumber;
 			while(requiredNumber > 0) {
 				if(proper.Count == 0) {
-					raiseOnDrugDistribution(drug, requiredCopy-requiredNumber, false);
+					raiseOnDrugDistribution(drug, requiredNumber, false);
 					return false;
 				}
 				var used = proper.First();
@@ -259,6 +269,10 @@ namespace lab2 {
 		/// <param name="specialSpace">Вместимость внутреннего хранилища</param>
 		protected SpecialWarehouse(int space, int specialSpace) : base(space){
 			specialStore = Warehouse.Instance(specialSpace);
+			// redirecting events
+			specialStore.OnBalanceCount += raiseOnBalanceCount;
+			specialStore.OnDrugDistribution += raiseOnDrugDistribution;
+			specialStore.OnShipmentStore += raiseOnShipmentStore;
 		}
 		public override double getBalance() {
 			// Don't emit OnBalanceCount event in getBalance()
