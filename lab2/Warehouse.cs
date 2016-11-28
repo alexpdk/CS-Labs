@@ -4,7 +4,7 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace lab2 {
+namespace DrugAccount {
 	/// <summary>
 	/// Интерфейс для складов
 	/// </summary>

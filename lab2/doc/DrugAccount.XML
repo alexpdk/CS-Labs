@@ -1,0 +1,592 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DrugAccount</name>
+    </assembly>
+    <members>
+        <member name="T:DrugAccount.IBalance`1">
+            <summary>
+            Интерфейс для операции проверки баланса.
+            </summary>
+            <typeparam name="T">Структура, обладающая балансом</typeparam>
+        </member>
+        <member name="M:DrugAccount.IBalance`1.checkBalance(System.Double)">
+            <summary>
+            Проверить баланс.
+            </summary>
+            <param name="expected">Ожидаемое состояние баланса</param>
+            <returns>Пройдена ли проверка</returns>
+        </member>
+        <member name="T:DrugAccount.WarehouseBalance`1">
+            <summary>
+            Проверка складского баланса.
+            </summary>
+            <typeparam name="T">Тип склада</typeparam>
+        </member>
+        <member name="F:DrugAccount.WarehouseBalance`1.warehouse">
+            <summary>
+            Проверяемый склад.
+            </summary>
+        </member>
+        <member name="T:DrugAccount.IDepartment">
+            <summary>
+            Интерфейс для отделов медучреждения
+            </summary>
+        </member>
+        <member name="M:DrugAccount.IDepartment.getRequiredNumber(DrugAccount.IDrug)">
+            <returns>Требуемое количество контейнеров с медикаментом</returns>
+        </member>
+        <member name="M:DrugAccount.IDepartment.isBudgetary">
+            <returns>Является ли отдел бюджетным</returns>
+        </member>
+        <member name="T:DrugAccount.Department">
+            <summary>
+            Отдел медучреждения
+            </summary>
+        </member>
+        <member name="F:DrugAccount.Department.needs">
+            <summary>
+            Потребность отдела в медикаментах
+            </summary>
+        </member>
+        <member name="T:DrugAccount.DrugCollection`1">
+            <summary>
+            Обобщённая коллекция, позволяет хранить списки медикаментов без дупликатов.
+            </summary>
+            <typeparam name="T">Тип медикаментов</typeparam>
+        </member>
+        <member name="T:DrugAccount.DrugCollection`1.SortDrugList">
+            <summary>
+            Предоставляемый тип для процедур сортировки списка медикаментоа
+            </summary>
+        </member>
+        <member name="M:DrugAccount.DrugCollection`1.Downcast``1">
+            <summary>
+            Выделить среди элементов коллекции элементы производного типа.
+            </summary>
+            <typeparam name="T2">Производный тип</typeparam>
+            <returns>Коллекцию производного типа</returns>
+        </member>
+        <member name="M:DrugAccount.DrugCollection`1.Stringify(System.Func{`0,System.String},System.String)">
+            <summary>
+            Получить строковое представление коллекции сложением строковых представлений медикаментов
+            </summary>
+            <param name="t_str">Функция, возвращающая строковое представление медикамента</param>
+            <param name="delimeter">Разделитель представлений медикаментов</param>
+        </member>
+        <member name="T:DrugAccount.IDrug">
+            <summary>
+            Интерфейс для медикаментов
+            </summary>
+        </member>
+        <member name="M:DrugAccount.IDrug.isNarcotic">
+            <returns>Является ли медикамент наркотическим</returns>
+        </member>
+        <member name="M:DrugAccount.IDrug.requiresFridge">
+            <returns>Требует ли медикамент хранения в охлаждённом состоянии</returns>
+        </member>
+        <member name="T:DrugAccount.AbstractManufacturedDrug">
+            <summary>
+            Интерфейс для медикаментов фабричного производства, учитываемых по МНН
+            </summary>
+        </member>
+        <member name="P:DrugAccount.AbstractManufacturedDrug.INN">
+            <summary>
+            Доступный для чтения МНН медикамента
+            </summary>
+        </member>
+        <member name="T:DrugAccount.AbstractCompoundedDrug">
+            <summary>
+            Интерфейс для экстемпоральных медикаментов, учитываемых по коду ингредиентов.
+            </summary>
+        </member>
+        <member name="P:DrugAccount.AbstractCompoundedDrug.CompoundCode">
+            <summary>
+            Доступный для чтения код ингредиентов
+            </summary>
+        </member>
+        <member name="M:DrugAccount.AbstractCompoundedDrug.isSertified">
+            <returns>Сертифицировано ли производство препарата</returns>
+        </member>
+        <member name="T:DrugAccount.CompoundedDrug">
+            <summary>
+            Экстемпоральный медикамент
+            </summary>
+        </member>
+        <member name="F:DrugAccount.CompoundedDrug.has_narcotic">
+            <summary>
+            Входят ли в состав наркотики
+            </summary>
+        </member>
+        <member name="F:DrugAccount.CompoundedDrug.keep_cold">
+            <summary>
+            Требует ли хранения в охлаждённом состоянии
+            </summary>
+        </member>
+        <member name="F:DrugAccount.CompoundedDrug.sertified">
+            <summary>
+            Сертифицирован ли препарат
+            </summary>
+        </member>
+        <member name="F:DrugAccount.CompoundedDrug.code">
+            <summary>
+            Код ингредиентов
+            </summary>
+        </member>
+        <member name="T:DrugAccount.DrugDescriptor">
+            <summary>
+            Описание препарата, позволяющее получать его свойства при известном МНН. Не определяет
+            способ идентификации препарата.
+            </summary>
+        </member>
+        <member name="T:DrugAccount.UnifiedDescriptor">
+            <summary>
+            Унифицированное описание - описание препарата посредством МНН.
+            </summary>
+            
+        </member>
+        <member name="T:DrugAccount.NonUnifiedDescriptor">
+            <summary>
+            Неунифицированное описание препарата(через товарное или химическое наименование)
+            </summary>
+        </member>
+        <member name="F:DrugAccount.NonUnifiedDescriptor.unified">
+            <summary>
+            Ссылка на описание посредством МНН
+            </summary>
+        </member>
+        <member name="M:DrugAccount.NonUnifiedDescriptor.#ctor(System.String)">
+            <summary>
+            Коструктор формирует внутреннюю ссылку на описание 
+            </summary>
+            <param name="_inn">МНН</param>
+        </member>
+        <member name="T:DrugAccount.TrademarkDescriptor">
+            <summary>
+            Описание препарата посредством товарного имени и производителя
+            </summary>
+        </member>
+        <member name="T:DrugAccount.ChemicalDescriptor">
+            <summary>
+             Описание препарата посредством научного наименования действующего вещества
+            </summary>
+        </member>
+        <member name="T:DrugAccount.PharmData">
+            <summary>
+            Фармакологические данные об используемых медикаментах
+            </summary>
+        </member>
+        <member name="F:DrugAccount.PharmData.USUAL_CONDITIONS">
+            <summary>
+            Коды условий хранения
+            </summary>
+        </member>
+        <member name="F:DrugAccount.PharmData.conditions">
+            <summary>
+            Условия хранения препаратов
+            </summary>
+        </member>
+        <member name="F:DrugAccount.PharmData.INNList">
+            <summary>
+            Список МНН закупаемых медикаментов
+            </summary>
+        </member>
+        <member name="T:DrugAccount.IFund">
+            <summary>
+            Интерфейс для источников финансирования
+            </summary>
+        </member>
+        <member name="M:DrugAccount.IFund.approveFunding(DrugAccount.IDrug,DrugAccount.IDepartment)">
+            <param name="drug">Тип медикамента</param>
+            <param name="department">Отделение, которому будет передан медикамент</param>
+            <returns>Отпустит ли источник финансирования средства 
+            на закупку медикаментов для отдела</returns>
+        </member>
+        <member name="M:DrugAccount.IFund.provideFunding(DrugAccount.IShipment{DrugAccount.IDrug},DrugAccount.IDepartment)">
+            <summary>
+            Выделить средства на закупку партии медикаментов для отдела.
+            </summary>
+            <param name="shipment">Партия</param>
+            <param name="department">Отдел</param>
+            <returns>Выделены ли средства</returns>
+        </member>
+        <member name="T:DrugAccount.Fund">
+            <summary>
+            Источник общего назначения отпускает средства на любые цели
+            </summary>
+        </member>
+        <member name="F:DrugAccount.Fund.balance">
+            <summary>
+            Баланс на счёте источника
+            </summary>
+        </member>
+        <member name="T:DrugAccount.BudgetaryFund">
+            <summary>
+            Бюджетный источник отпускает средства только на поставки бюджетным отеделениям
+            </summary>
+        </member>
+        <member name="T:DrugAccount.TargetedFund">
+            <summary>
+            Целевой источник выделяет средства на медикаменты из конкретного списка
+            </summary>
+        </member>
+        <member name="F:DrugAccount.TargetedFund.targets">
+            <summary>
+            Список оплачиваемых медикаментов
+            </summary>
+        </member>
+        <member name="T:DrugAccount.DepartmentFund">
+            <summary>
+            Фонд отделения выделяет средства на закупки для конкретного отделения
+            </summary>
+        </member>
+        <member name="F:DrugAccount.DepartmentFund.department">
+            <summary>
+            Финансируемое отделение
+            </summary>
+        </member>
+        <member name="T:DrugAccount.WarehouseEventArgs">
+            <summary>
+            Класс для передачи аргументов в обработчики событий класса Склад
+            </summary>
+        </member>
+        <member name="T:DrugAccount.IWarehouseLogger`1">
+            <summary>
+            Интерфейс для логгирования событий склада
+            </summary>
+            <typeparam name="T">Тип склада</typeparam>
+        </member>
+        <member name="E:DrugAccount.IWarehouseLogger`1.OnLog">
+            <summary>
+            Событие, на которое должны подписываться методы логирования
+            </summary>
+        </member>
+        <member name="T:DrugAccount.WarehouseLogger`1">
+            <summary>
+            Класс для логирования событий склада
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="F:DrugAccount.WarehouseLogger`1.writer">
+            <summary>
+            Объект, используемый для записи сообщений
+            </summary>
+        </member>
+        <member name="M:DrugAccount.StringWarehouseLogger`1.getLog">
+            <returns>Строку с результатами логирования</returns>
+        </member>
+        <member name="T:DrugAccount.IShipment`1">
+            <summary>
+            Интерфейс для партий медикаментов
+            </summary>
+            <typeparam name="T">Тип медикамента</typeparam>
+        </member>
+        <member name="M:DrugAccount.IShipment`1.getDrug">
+            <summary>
+            Получить медикамент, поставляемый в партии
+            </summary>
+            <returns>Медикамент</returns>
+        </member>
+        <member name="M:DrugAccount.IShipment`1.decreaseVolume(System.Int32)">
+            <summary>
+            Изъять часть контейнеров из партии.
+            </summary>
+            <param name="dec">Число изымаемых контейнеров. Если оно больше размера партии,
+            из партии изымаются все контейнеры.</param>
+            <returns>Число изятых контейнеров</returns>
+        </member>
+        <member name="M:DrugAccount.IShipment`1.getVolume">
+            <summary></summary>
+            <returns>Размер партии (число контейнеров)</returns>
+        </member>
+        <member name="M:DrugAccount.IShipment`1.getPrice">
+            <summary></summary>
+            <returns>Закупочная цена контейнера</returns>
+        </member>
+        <member name="P:DrugAccount.IShipment`1.Cost">
+            <summary>
+            Стоимость партии
+            </summary>
+        </member>
+        <member name="T:DrugAccount.Shipment`1">
+            <summary>
+            Партия медикаментов
+            </summary>
+        </member>
+        <member name="F:DrugAccount.Shipment`1.drug">
+            <summary>
+            Поставляемый медикамент
+            </summary>
+        </member>
+        <member name="F:DrugAccount.Shipment`1.volume">
+            <summary>
+            Размер партии
+            </summary>
+        </member>
+        <member name="F:DrugAccount.Shipment`1.price">
+            <summary>
+            Закупочная цена контейнера
+            </summary>
+        </member>
+        <member name="P:DrugAccount.Shipment`1.Cost">
+            <summary>
+            Стоимость партии: произведение числа контейнеров на закупочную цену
+            </summary>
+        </member>
+        <member name="M:DrugAccount.Shipment`1.#ctor(`0,System.Int32,System.Double)">
+            <summary></summary>
+            <param name="_drug">Препарат</param>
+            <param name="_volume">Размер партии</param>
+            <param name="_price">Закупочная стоимость</param>
+        </member>
+        <member name="T:DrugAccount.Smoothsort`1">
+            <summary>
+            Обобщённый алгоритм плавной сортировки
+            </summary>
+            <typeparam name="T">Тип сортируемых данных</typeparam>
+        </member>
+        <member name="F:DrugAccount.Smoothsort`1.comp">
+            <summary>
+            Метод сравнения сортируемых значений
+            </summary>
+        </member>
+        <member name="F:DrugAccount.Smoothsort`1.list">
+            <summary>
+            Сортируемый список
+            </summary>
+        </member>
+        <member name="F:DrugAccount.Smoothsort`1.leos">
+            <summary>
+            Список чисел Леонардо от 1 до первого числа, превышающего размер сортируемого списка
+            </summary>
+        </member>
+        <member name="F:DrugAccount.Smoothsort`1.sizes">
+            <summary>
+            Номера чисел Леонардо, соответствующих размерам куч в последовательности
+            </summary>
+        </member>
+        <member name="F:DrugAccount.Smoothsort`1.print">
+            <summary>
+            Флаг отладочной печати процесса сортировки
+            </summary>
+        </member>
+        <member name="F:DrugAccount.Smoothsort`1.completed">
+            <summary>
+            Завершена ли сортировка
+            </summary>
+        </member>
+        <member name="M:DrugAccount.Smoothsort`1.ensureSequence(System.Int32,System.Int32)">
+            <summary>
+            Обеспечить для текущей кучи выполнение свойств последовательности куч: корень
+            кучи больше или равен корню предыдущей кучи, а также левому и правому потомкам.
+            </summary>
+            <param name="rootIndex">Индекс корня текущей кучи</param>
+            <param name="sizeIndex">Индекс элемента списка размеров, позволяющего узнать размер
+            текущей кучи</param>
+        </member>
+        <member name="M:DrugAccount.Smoothsort`1.genLeonardo">
+            <summary>
+            Сгенерировать числа Леонардо, используемые при сортировке (до первого числа, 
+            превосходящего размер сортируемого списка, включительно).
+            </summary>
+        </member>
+        <member name="M:DrugAccount.Smoothsort`1.insertElem(System.Int32)">
+            <summary>
+            Включить элемент в последовательность куч
+            </summary>
+            <param name="listIndex">Номер элемента в сортируемом списке</param>
+        </member>
+        <member name="M:DrugAccount.Smoothsort`1.printList(System.Int32)">
+            <summary>
+            Форматированная печать последовательности куч
+            </summary>
+            <param name="maxIndex">Номер в сортируемом списке последнего элемента,
+            принадлежащего последовательности куч</param>
+        </member>
+        <member name="M:DrugAccount.Smoothsort`1.removeElem(System.Int32)">
+            <summary>
+            Удалить максимальный элемент из последовательности куч, не нарушая свойств
+            последовательности
+            </summary>
+            <param name="listIndex">Номер в сортируемом списке последнего элемента,
+            принадлежащего последовательности куч</param>
+            <returns>Удалённый элемент</returns>
+        </member>
+        <member name="M:DrugAccount.Smoothsort`1.shiftDown(System.Int32,System.Int32)">
+            <summary>
+            Просеить элемент в куче Леонардо до достижения позиции, пока он не будет меньше
+            своих потомков.
+            </summary>
+            <param name="rootIndex">Индекс просеиваемого элемента</param>
+            <param name="sizeKey">Индекс числа Леонардо, соответствующего размеру кучи,
+            корнем которой служит просеиваемый элемент</param>
+        </member>
+        <member name="M:DrugAccount.Smoothsort`1.Sort(System.IProgress{System.Int32})">
+            <summary>
+            Выполнить плавную сортировку списка по возрастанию
+            </summary>
+        </member>
+        <member name="M:DrugAccount.Smoothsort`1.valMore(System.Int32,System.Int32)">
+            <returns>Превосходит ли элемент с индексом i1 элемент с индексом i2</returns>
+        </member>
+        <member name="M:DrugAccount.Smoothsort`1.valNotLess(System.Int32,System.Int32)">
+            <returns>Не уступает ли элемент с индексом i1 элементу с индексом i2</returns>
+        </member>
+        <member name="M:DrugAccount.Smoothsort`1.valSwap(System.Int32,System.Int32)">
+            <summary>
+            Поменять в списке элементы с заданными индексами
+            </summary>
+        </member>
+        <member name="T:DrugAccount.IWarehouse">
+            <summary>
+            Интерфейс для складов
+            </summary>
+        </member>
+        <member name="P:DrugAccount.IWarehouse.Space">
+            <summary>
+            Свойство для доступа к свободному пространству на складе
+            </summary>
+        </member>
+        <member name="M:DrugAccount.IWarehouse.distributeDrug(DrugAccount.IDrug,System.Int32)">
+            <summary>
+            Отпустить требуемое число медикаментов со склада. 
+            </summary>
+            <param name="drug">Требуемый медикамент</param>
+            <param name="requiredNumber">Требуемое число</param>
+            <returns>Были ли медикаменты успешно выданы</returns>
+        </member>
+        <member name="M:DrugAccount.IWarehouse.getBalance">
+            <returns>Общую стоимость партий на балансе склада</returns>
+        </member>
+        <member name="M:DrugAccount.IWarehouse.loadShipments(System.String)">
+            <summary>
+            Загрузить данные о партиях медикаментов на складе из файла конфигурации.
+            </summary>
+            <param name="path">Путь к файлу</param>
+            <returns>Удалось ли разместить на складе указанные в файле партии</returns>
+        </member>
+        <member name="M:DrugAccount.IWarehouse.saveShipments(System.String)">
+            <summary>
+            Выгрузить данные о партиях медикаментов в файл конфигурации.
+            </summary>
+            <param name="path">Путь к файлу</param>
+        </member>
+        <member name="M:DrugAccount.IWarehouse.storeShipment(DrugAccount.IShipment{DrugAccount.IDrug})">
+            <summary>
+            Загрузить партию медикаментов на склад. Если на складе отстуствуют необходимые 
+            для партии условия хранения или недостаточно место, партия на складе не размещается.
+            </summary>
+            <param name="shipment">Партия медикаментов</param>
+            <returns>Удалось ли успешно разместить партию</returns>
+        </member>
+        <member name="E:DrugAccount.IWarehouse.OnBalanceCount">
+            <summary>
+            Событие подсчёта баланса склада. Обработчику передаётся подсчитанный баланс. 
+            </summary>
+        </member>
+        <member name="E:DrugAccount.IWarehouse.OnDrugDistribution">
+            <summary>
+            Событие отпуска медикаментов со склада. Обработчику передаётся отпускаемый медикамент, 
+            число отпущенных упаковок и логическое значение: удалось ли отпустить требуемое
+            количество.
+            </summary>
+        </member>
+        <member name="E:DrugAccount.IWarehouse.OnShipmentStore">
+            <summary>
+            Событие размещения партии на складе. Обработчику передаются размещаемая партия
+            и логическое значение: удалось ли успешно разместить партию
+            </summary>
+        </member>
+        <member name="T:DrugAccount.ISpecialWarehouse">
+            <summary>
+            Интерфейс для складов с внутренними хранилищами для медикаментов.
+            </summary>
+        </member>
+        <member name="P:DrugAccount.ISpecialWarehouse.SpecialSpace">
+            <summary>
+            Свойство, предоставляющее доступ к свободному пространству во внутреннем хранилища
+            </summary>
+        </member>
+        <member name="T:DrugAccount.Warehouse">
+            <summary>
+            Класс Склад служит основой для различных типов складов в предметной области и используется для
+            представления хранилищ лекарств (холодильников, сейфов).
+            </summary>
+        </member>
+        <member name="F:DrugAccount.Warehouse.shipments">
+            <summary>
+            Партии медикаментов на складе
+            </summary>
+        </member>
+        <member name="F:DrugAccount.Warehouse.emitBalanceEvent">
+            <summary>
+            Позволяет избежать отправления избыточных событий при подсчёте баланса
+            на складах с внутренним хранилищем.
+            </summary>
+        </member>
+        <member name="F:DrugAccount.Warehouse.emitShipmentEvent">
+            <summary>
+            Позволяет избежать отправления избыточных событий при загрузке партий склада
+            из файла конфигурации
+            </summary>
+        </member>
+        <member name="F:DrugAccount.Warehouse.space">
+            <summary>
+            Свободное место на складе (измеряется в количестве контейнеров с медикаментами)
+            </summary>
+        </member>
+        <member name="M:DrugAccount.Warehouse.#ctor(System.Int32)">
+            <summary>
+            Область видимости конструктора ограничена, т.к. класс не пригоден для самостоятельного 
+            использования (отсутствуют проверки на условия хранения медикаментов).
+            </summary>
+            <param name="_space">Начальная вместимость</param>
+        </member>
+        <member name="M:DrugAccount.Warehouse.Instance(System.Int32)">
+            <summary>
+            Позволяет дочерним классам получить экземпляр родительского класса
+            в обход защищённого конструктора.
+            </summary>
+            <param name="space">Начальная вместимость</param>
+            <returns>Экземпляр класса Склад</returns>
+        </member>
+        <member name="T:DrugAccount.CommonWarehouse">
+            <summary>
+            Обычный склад не позволяет хранить медикаменты, требующие охлаждения или защиты 
+            </summary>
+        </member>
+        <member name="T:DrugAccount.SpecialWarehouse">
+            <summary>
+            Склад, содержащий внутренние хранилища для медикаментов. Вместимость внутренних хранилищ 
+            допустимо изменять, при это общая вместимость обычных помещений и внутренних хранилищ постоянна.
+            </summary>
+        </member>
+        <member name="F:DrugAccount.SpecialWarehouse.specialStore">
+            <summary>
+            Внутреннее хранилище
+            </summary>
+        </member>
+        <member name="M:DrugAccount.SpecialWarehouse.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Конструктор инициализирует внутреннее хранилище с заданной вместимостью.
+            </summary>
+            <param name="space">Вместимость обычных помещений</param>
+            <param name="specialSpace">Вместимость внутреннего хранилища</param>
+        </member>
+        <member name="T:DrugAccount.FridgeWarehouse">
+            <summary>
+            Склад с холодильниками позволяет хранить препараты в охлаждённом состоянии
+            </summary>
+        </member>
+        <member name="T:DrugAccount.SafeWarehouse">
+            <summary>
+            Склад с сейфами позволяет хранить наркотические препараты
+            </summary>
+        </member>
+        <member name="T:DrugAccount.ComboWarehouse">
+            <summary>
+            Склад с комбинированным хранилищем позволяет хранить наркотические препараты в охлаждённом состоянии
+            </summary>
+        </member>
+    </members>
+</doc>

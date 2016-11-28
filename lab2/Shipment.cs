@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace lab2 {
+namespace DrugAccount {
 	/// <summary>
 	/// Интерфейс для партий медикаментов
 	/// </summary>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace lab2 {
+namespace DrugAccount {
 	/// <summary>
 	/// Интерфейс для отделов медучреждения
 	/// </summary>

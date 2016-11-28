@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace lab2 {
+namespace DrugAccount {
 	/// <summary>
 	/// Обобщённый алгоритм плавной сортировки
 	/// </summary>

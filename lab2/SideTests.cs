@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace lab2 {
+namespace DrugAccount {
 	[TestFixture]
 	class SideTests {
 		[Test]
