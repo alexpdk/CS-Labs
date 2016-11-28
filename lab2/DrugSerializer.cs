@@ -11,7 +11,7 @@ using System.Xml.Linq;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
-namespace lab2 {
+namespace DrugAccount {
 	interface DrugSerializer {
 		DrugCollection<Drug> Deserialize(string json);
 		DrugCollection<Drug> DeserializeFromFile(string path);

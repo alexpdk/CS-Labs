@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace lab2 {
+namespace DrugAccount {
 	[TestFixture]
 	public class CoreTests {
 		private const String dataPath = @"C:\Users\дом\Documents\Visual Studio 2015\Projects\lab1\lab2\data\";
@@ -129,13 +129,13 @@ namespace lab2 {
 			copy = jsonSerial.Deserialize(json);
 			Assert.That(copy, Is.EquivalentTo(dC));
 
-			jsonSerial.SerializeToFile(dC, dataPath+"data.json");
-			copy = jsonSerial.DeserializeFromFile(dataPath+"data.json");
+			jsonSerial.SerializeToFile(dC, dataPath+"drugs.json");
+			copy = jsonSerial.DeserializeFromFile(dataPath+"drugs.json");
 			Assert.That(copy, Is.EquivalentTo(dC));
 
 			var drug = jsonSerial.DeserializeDrug(@"
 				{
-				  ""$type"": ""lab2.ChemicalDescriptor, ConsoleApplication"",
+				  ""$type"": ""DrugAccount.ChemicalDescriptor, DrugAccount"",
 				  ""chemName"": ""CDP870"",
 				  ""INN"": ""Certolizumab pegol""
 				}

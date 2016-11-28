@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace lab2 {
+namespace DrugAccount {
 	public interface IExceptionLogger {
 		void LogDrugAccountException(DrugAccountException e);
 		void LogSystemException(Exception e);

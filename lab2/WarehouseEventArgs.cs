@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace lab2 {
+namespace DrugAccount {
 	/// <summary>
 	/// Класс для передачи аргументов в обработчики событий класса Склад
 	/// </summary>

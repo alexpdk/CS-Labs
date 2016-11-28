@@ -5,13 +5,12 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace lab2
+namespace DrugAccount
 {
     class Program
     {
         static void Main(string[] args)
         {
-			new CoreTests().CheckDrugSerialization();
 			DrugCollection<IDrug> dC = new DrugCollection<IDrug>(new List<IDrug> {
 				new UnifiedDescriptor("lidocaine"),
 				new TrademarkDescriptor("procaine-A","PharmSharp","procaine"),

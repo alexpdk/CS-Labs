@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace lab2 {
+namespace DrugAccount {
 	/// <summary>
 	/// Обобщённая коллекция, позволяет хранить списки медикаментов без дупликатов.
 	/// </summary>

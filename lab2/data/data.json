@@ -1,18 +1,18 @@
 {
-  "$type": "lab2.DrugCollection`1[[lab2.Drug, ConsoleApplication]], ConsoleApplication",
+  "$type": "DrugAccount.DrugCollection`1[[DrugAccount.Drug, DrugAccount]], DrugAccount",
   "$values": [
     {
-      "$type": "lab2.UnifiedDescriptor, ConsoleApplication",
+      "$type": "DrugAccount.UnifiedDescriptor, DrugAccount",
       "INN": "lidocaine"
     },
     {
-      "$type": "lab2.TrademarkDescriptor, ConsoleApplication",
+      "$type": "DrugAccount.TrademarkDescriptor, DrugAccount",
       "trademark": "procaine-A",
       "company": "PharmSharp",
       "INN": "procaine"
     },
     {
-      "$type": "lab2.ChemicalDescriptor, ConsoleApplication",
+      "$type": "DrugAccount.ChemicalDescriptor, DrugAccount",
       "chemName": "CP870",
       "INN": "Certolizumab pegol"
     }
